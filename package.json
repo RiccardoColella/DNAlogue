@@ -1,0 +1,28 @@
+{
+  "name": "dnalogue",
+  "version": "1.0.0",
+  "description": "Chatbot aiming to translate NL to GMQL",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RiccardoColella/DNALogue.git"
+  },
+  "keywords": [
+    "chatbot"
+  ],
+  "author": "Colella Riccardo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RiccardoColella/DNALogue/issues"
+  },
+  "homepage": "https://github.com/RiccardoColella/DNALogue#readme",
+  "dependencies": {
+    "bufferutil": "^4.0.1",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "utf-8-validate": "^5.0.2"
+  }
+}

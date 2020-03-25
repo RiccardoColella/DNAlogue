@@ -4,6 +4,7 @@
   "description": "Chatbot aiming to translate NL to GMQL",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "test"
   },
   "repository": {

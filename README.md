@@ -1,5 +1,8 @@
 ## DNALogue
 Chatbot aiming to translate Natural Language to GMQL
 
-#Getting started
-Type `npm start` for starting the server
+# Hou to install
+`$> npm start` for installing all the dependencies
+
+# Getting started
+`$> npm start` for starting the server

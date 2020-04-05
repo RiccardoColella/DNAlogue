@@ -5,10 +5,9 @@ const constraints = {
         width: { min: 1280 },
         height: { min: 720 }
     }
-}
+};
 
 $(function () {
-    var socket = io();
 
     const localVideo = document.createElement('video');
     localVideo.autoplay = true;
@@ -17,5 +16,5 @@ $(function () {
 
     navigator.mediaDevices.getUserMedia(constraints).then(stream => {
         localVideo.srcObject = stream;
-    })
+    });
 });

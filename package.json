@@ -2,9 +2,9 @@
   "name": "dnalogue",
   "version": "1.0.0",
   "description": "Chatbot aiming to translate NL to GMQL",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "test": "test"
   },
   "repository": {

@@ -3,12 +3,14 @@ var userSocket;
 var wizardSocket;
 var chat;
 var wizardRE = /.*\/wizard.*/;
-const chatpartecipants = 'chat partecipants';
+const chatParticipants = 'chat participants';
 
 function startIO(http) {
     io = require("socket.io")(http);
     chat = io.of('/chat');
     chat.on('connection', onChatConnection);
+    //TODO implement registration/login event for the user
+    //TODO implement the StartSession event from the wizard
 }
 
 function onChatConnection(socket){
@@ -22,20 +24,20 @@ function onChatConnection(socket){
         console.log("New user connected to chat");
         // TODO implement log of the user connected
     }
-    socket.join(chatpartecipants);
+    socket.join(chatParticipants);
     // TODO implement log of the join
     socket.on('chat message', (msg) => {
-        if (socket == wizardSocket){
-            sendToChatPartecipants('wizard message', msg);
+        if (socket === wizardSocket){
+            sendToChatParticipants('wizard message', msg);
         } else {
-            sendToChatPartecipants('user message', msg);
+            sendToChatParticipants('user message', msg);
         }
         // TODO implement log of the event
     });
 }
 
-function sendToChatPartecipants(e, message){
-    sendMessageTo(chatpartecipants, e, message);
+function sendToChatParticipants(e, message){
+    sendMessageTo(chatParticipants, e, message);
 }
 
 function sendMessageTo(addressee, e, message) {

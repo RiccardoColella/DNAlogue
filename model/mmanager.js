@@ -45,7 +45,9 @@ class Database {
             // Converted to string to be saved and logged
             const stringTask = JSON.stringify(jsonTask, null, 4);
             console.log("Saving task:\n" + stringTask);
-            fs.writeFile(tasksFolder + jsonTask.name + ".json", stringTask, 'utf8', errorManagement);
+            // Here I have to use the Sync version of writeFile, 'cause the other saves file only when node process ends
+            fs.writeFileSync(tasksFolder + jsonTask.name + ".json", stringTask, 'utf8');
+            //fs.writeFile(tasksFolder + jsonTask.name + ".json", stringTask, 'utf8', errorManagement);
             // After saving the file, I update the db
             retrieveTasks(this);
         } catch (err) {

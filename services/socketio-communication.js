@@ -34,6 +34,11 @@ function onChatConnection(socket){
         }
         // TODO implement log of the event
     });
+
+    // not tested
+    socket.on('Push img', (image) =>{
+        sendMessageTo(userSocket, 'Update image', image);
+    });
 }
 
 function sendToChatParticipants(e, message){

@@ -54,6 +54,30 @@ class Database {
             errorManagement(err, "Error parsing or saving JSON task.");
         }
     }
+
+    deleteTask(task) {
+        if (typeof (task) == 'number'){
+            try {
+                task = this.tasksPath[task];
+            } catch (err) {
+                errorManagement(err, "Error while trying to delete task number: " + task);
+            }
+        }
+        if (typeof(task) == 'string') {
+            if (!task.endsWith('.json')) {
+                task += '.json';
+            }
+            if (!task.startsWith(tasksFolder)) {
+                task = tasksFolder + task;
+                try {
+                    fs.unlinkSync(task);
+                } catch (err) {
+                    errorManagement(err, "Error while trying to delete: " + file_to_delete);
+                }
+            } else throw new SyntaxError("given task to be deleted is not a number or string.");
+        }
+        retrieveTasks(this);
+    }
 }
 
 function retrieveTasks(db) {

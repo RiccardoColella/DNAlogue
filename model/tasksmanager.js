@@ -25,12 +25,17 @@ class Database {
 
     getTaskSync(desiredTask) {
         try {
-            let taskToGet = this.taskDict.get(parseInt(desiredTask)).path;
-            return fs.readFileSync(taskToGet, 'utf8');
-        } catch (keyError) {
-            errorManagement(keyError,
+            if (this.taskDict.has(parseInt(desiredTask))) {
+                let taskToGet = this.taskDict.get(parseInt(desiredTask)).path;
+                return fs.readFileSync(taskToGet, 'utf8');
+            } else {
+                errorManagement(desiredTask + " <-- incorrect desired task for the dict");
+                return undefined;
+            }
+        } catch (err) {
+            errorManagement(err,
                 desiredTask +
-                " <-- incorrect desired task for the dict");
+                " <-- error retrieving the task");
         }
     }
 

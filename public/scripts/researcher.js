@@ -45,7 +45,7 @@ Vue.component('chat', {
         })
 
         eventBus.$on('wizardMessageReceived', function (wizardMessage) {
-            self.messages.push("WIZARD: " + wizardMessage)
+            self.messages.push("ME: " + wizardMessage)
         });
     }
 });

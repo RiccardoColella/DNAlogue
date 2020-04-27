@@ -41,11 +41,11 @@ Vue.component('chat', {
         var self = this;
 
         eventBus.$on('userMessageReceived', function (userMessage) {
-            self.messages.push("USER: " + userMessage)
+            self.messages.push("ME: " + userMessage)
         })
 
         eventBus.$on('wizardMessageReceived', function (wizardMessage) {
-            self.messages.push("WIZARD: " + wizardMessage)
+            self.messages.push("BOT: " + wizardMessage)
         });
     }
 });

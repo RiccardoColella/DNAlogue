@@ -1,0 +1,138 @@
+/* Initial stuff, due to full height application */
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 95%;
+}
+
+/* Style of generic containers */
+
+.box {
+    height: 100%;
+    background-color: #fff6f6;
+    border-style: solid;
+    border-radius: 0.2em;
+    border-color: black;
+}
+
+
+
+/* ------------------------------------------------------>>>>>>>> */
+/* FRAMEWORK - Full app */
+
+#page {
+    height: 100%;
+}
+
+#app-container {
+    display: grid;
+    grid-template-columns: 40% auto;
+    grid-template-rows: 3em auto;
+    grid-template-areas: 
+      "header header"
+      "chat tabs";
+    column-gap: 2em;
+    row-gap: 2em;
+
+    height: 100%;
+}
+
+#header-item {
+    grid-area: header;
+}
+
+#chat-item {
+    grid-area: chat;
+}
+
+#tabs-item{
+    grid-area: tabs;
+}
+
+/* FRAMEWORK - Chat */
+
+#chat {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto 2em;
+    grid-template-areas: 
+      "chat-dialogue"
+      "chat-form";
+
+    height: 100%;
+}
+
+#chat > .dialogue {
+    grid-area: chat-dialogue;
+}
+
+#chat > .form {
+    grid-area: chat-form;
+}
+
+/* FRAMEWORK - Tabs */
+
+#tabs {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 2em auto;
+    grid-template-areas: 
+      "tabs-links"
+      "tab-content";
+    row-gap: 1em;
+    height: 100%;
+}
+
+#tabs > .tabs {
+    grid-area: tabs-links;
+}
+
+#tabs > .tab-content {
+    grid-area: tab-content;
+}
+
+/* ------------------------------------------------------<<<<<<<< */
+
+
+
+/* PURE STYLE - Header's style */
+
+#header {
+    padding: 0.5em;
+}
+
+/* PURE STYLE - Chat's style */
+
+#chat ul {
+    list-style-type: none;
+    margin: 0; 
+    padding: 0;
+}
+
+#chat li {
+    padding: 5px 10px;
+}
+#chat li:nth-child(odd) {
+    background: #eee;
+}
+
+form {
+    border-style: solid;
+    display: flex;
+    height: 100%;
+}
+
+form input {
+    padding-left: 1em;
+    border: 0;
+    width: 90%;
+}
+
+form button {
+    width: 10%;
+    background: rgb(130, 224, 255);
+    border: none;
+}

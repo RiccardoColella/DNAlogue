@@ -1,0 +1,12 @@
+{
+    "Title": "Task1",
+	"Number": "1",
+	"Description": "This is a general task",
+	"Images": [
+        "Image1",
+        "Image2",
+        "image3"
+    ],
+    "PrecompiledTexts": [],
+    "PresavedAPIRequests": []
+}

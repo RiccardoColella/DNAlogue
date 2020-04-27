@@ -28,13 +28,14 @@ let uploading = multer({
     })
 });
 
-
+// ---------------------------!!!---------------------------- //
+// -----------------------CHANGE HERE------------------------ //
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/user.html');
 });
 
 app.get('/wizard', function (req, res) {
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/researcher.html');
 });
 
 

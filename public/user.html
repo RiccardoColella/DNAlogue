@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <title>DNALogue - User Side</title>
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/style-user.css">
+  </head>
+  <body>
+
+    <div id="page">
+      <div id="app-container">
+        <div id="header-item">
+          <div class="box">
+            <div id="header">
+              <span>USER INTERFACE</span>
+            </div>
+          </div>
+        </div>
+        <div id="chat-item">
+          <div class="box">
+            <!-- Here the chat template -->
+            <chat></chat>
+          </div>
+        </div>
+        <div id="tabs-item">
+          <div class="box">
+            <div id="tabs">
+              <div class="tabs">
+                <div>
+                  <span>Tab 1</span>
+                  <span>Tab 2</span>
+                </div>
+              </div>
+              <div class="tab-content"> 
+                <div>
+                  <img src="" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts under this comment -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="scripts/user.js"></script>
+  </body>
+</html>

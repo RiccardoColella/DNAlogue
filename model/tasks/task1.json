@@ -1,12 +1,11 @@
 {
     "Title": "Task1",
-	"Number": "1",
+	"Number": 1,
 	"Description": "This is a general task",
 	"Images": [
-        "Image1",
-        "Image2",
-        "image3"
+        "images/genomic_1.jpg",
+        "images/genomic_2.png"
     ],
-    "PrecompiledTexts": [],
+    "PrecompiledTexts": ["Precompiled text A", "Precompiled text B"],
     "PresavedAPIRequests": []
 }

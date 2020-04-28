@@ -16,7 +16,7 @@ Vue.component('chat', {
             </ul>
         </div>
         <div class="form"> 
-            <form @submit.prevent="onSubmit">
+            <form @submit.prevent="onSubmit" class="chat-element">
                 <input autocomplete="off" v-model="currentMessage">
                 <button>Send</button>
             </form>
@@ -46,6 +46,76 @@ Vue.component('chat', {
 
         eventBus.$on('wizardMessageReceived', function (wizardMessage) {
             self.messages.push("ME: " + wizardMessage)
+        });
+    }
+});
+
+Vue.component('tabs', {
+    template: `
+    <div id="tabs">
+        <div class="tabs">
+            <div>
+                <span :class="{ activeTab: selectedTab == index }"
+                      v-for="(tab, index) in tabs" 
+                      :key="index"
+                      @click="selectedTab = index">
+                      {{ tabs[index].Title }}
+                </span>
+            </div>
+        </div>
+        <div class="tab-content"> 
+            <div v-if="tabs.length !== 0">
+                <div>
+                    <p v-for="(text, index) in tabs[selectedTab].PrecompiledTexts"         
+                        :key="index">
+                        {{text}}
+                    </p>
+                </div>
+                <div>
+                    <img v-for="(image, index) in tabs[selectedTab].Images"         
+                        :key="index"
+                        :src="image"
+                        @click="sendImageToUser(image)">
+                </div>
+                <!-- <form action="/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file1">
+                    <input type="submit" value="Upload">
+                </form> -->
+
+            </div>
+        </div>
+    </div>
+    `,
+    data: function () {
+        return {
+            tabs: [],
+            selectedTab : 0,
+            tasksList: []
+        }
+    },
+    methods: {
+        sendImageToUser: function (image) {
+            socket.emit('Push img', image);
+            console.log(image + " pushed to user");
+        },
+        onImageSubmit: function () {
+
+        }
+    },
+    mounted() {
+
+        var self= this;
+
+        axios.get('/tasks').then( function (response) {
+
+            self.tasksList = response.data;
+
+            for (let i = 0; i < self.tasksList.length; i++) {
+                axios
+                    .get('/tasks/' + self.tasksList[i].Number.toString())
+                    .then(response => (self.tabs.push(response.data)));
+            }
+
         });
     }
 });

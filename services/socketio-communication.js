@@ -37,7 +37,9 @@ function onChatConnection(socket){
 
     // not tested
     socket.on('Push img', (image) =>{
-        sendMessageTo(userSocket, 'Update image', image);
+        sendToChatParticipants('Update image', image);
+        // sendMessageTo(userSocket, 'Update image', image);
+        console.log("Immagine pushata");
     });
 }
 

@@ -18,6 +18,10 @@ body {
     border-color: black;
 }
 
+.box::-webkit-scrollbar {
+    display: none;
+}
+
 
 
 /* ------------------------------------------------------>>>>>>>> */
@@ -119,20 +123,30 @@ body {
     background: #eee;
 }
 
-form {
+form.chat-element {
     border-top-style: solid;
     display: flex;
     height: 100%;
 }
 
-form input {
+form.chat-element input {
     padding-left: 1em;
     border: 0;
-    width: 90%;
+    width: 80%;
 }
 
-form button {
-    width: 10%;
+form.chat-element button {
+    width: 20%;
     background: rgb(130, 224, 255);
     border: none;
+}
+
+/* PURE STYLE - Tab's style */
+
+.tab-content img {
+    max-width: 20%;
+}
+
+.activeTab {
+    text-decoration: underline;
 }

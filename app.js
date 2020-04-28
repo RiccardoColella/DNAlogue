@@ -41,12 +41,18 @@ app.get('/wizard', function (req, res) {
 
 app.get('/tasks', function (req, res) {
     console.log("Requested: GET /tasks");
-    let tasks = db.getTasks();
-    res.send(tasks);
+    db.getTasks().then((tasks) => {
+        res.send(tasks);
+    })
+    // let tasks = db.getTasks();
+    // res.send(tasks);
 });
 
 app.get('/tasks/:taskid', function (req, res) {
     console.log("Requested: GET /tasks/" + req.params.taskid);
+    // db.getTaskSync(req.params.taskid).then((task) => {
+    //     res.send(task);
+    // })
     let task = db.getTaskSync(req.params.taskid);
     res.send(task);
 });

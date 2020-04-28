@@ -90,6 +90,7 @@ Vue.component('tabs', {
                 images : [image]
             };
             self.tabs.push(newTab);
+            self.selectedTab = self.tabs.length - 1;
             console.log(image + " received from wizard");
         })
     }

@@ -41,11 +41,15 @@ Vue.component('chat', {
         var self = this;
 
         eventBus.$on('userMessageReceived', function (userMessage) {
-            self.messages.push("USER: " + userMessage)
+            self.messages.push("USER: " + userMessage);
         })
 
         eventBus.$on('wizardMessageReceived', function (wizardMessage) {
-            self.messages.push("ME: " + wizardMessage)
+            self.messages.push("ME: " + wizardMessage);
+        });
+
+        eventBus.$on('textReadyToBeModified', function (text) {
+            self.currentMessage = text;
         });
     }
 });
@@ -67,7 +71,8 @@ Vue.component('tabs', {
             <div v-if="tabs.length !== 0">
                 <div>
                     <p v-for="(text, index) in tabs[selectedTab].PrecompiledTexts"         
-                        :key="index">
+                        :key="index"
+                        @click = "loadTextInChat(text)">
                         {{text}}
                     </p>
                 </div>
@@ -97,6 +102,9 @@ Vue.component('tabs', {
         sendImageToUser: function (image) {
             socket.emit('Push img', image);
             console.log(image + " pushed to user");
+        },
+        loadTextInChat: function (text) {
+            eventBus.$emit('textReadyToBeModified', text);
         },
         onImageSubmit: function () {
 

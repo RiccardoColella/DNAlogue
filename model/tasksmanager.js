@@ -6,7 +6,9 @@ class Database {
         this.taskDict = new Map();
 
         console.log("Initiating database...");
-        updateDB(this);
+        updateDB(this).then(() => {
+            console.log("Database initialized.")
+        });
     }
 
     async getTasks() {
@@ -24,7 +26,7 @@ class Database {
     }
 
     getTaskSync(desiredTask) {
-        if (this.taskDict.has(parseInt(desiredTask))) {
+        if (this.taskDict.has(desiredTask) || this.taskDict.has(parseInt(desiredTask))) {
             try {
                 let taskToGet = this.taskDict.get(parseInt(desiredTask)).path;
                 return fs.readFileSync(taskToGet, 'utf8');

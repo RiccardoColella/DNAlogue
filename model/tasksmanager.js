@@ -24,22 +24,23 @@ class Database {
     }
 
     getTaskSync(desiredTask) {
-        try {
-            if (this.taskDict.has(parseInt(desiredTask))) {
+        if (this.taskDict.has(parseInt(desiredTask))) {
+            try {
                 let taskToGet = this.taskDict.get(parseInt(desiredTask)).path;
                 return fs.readFileSync(taskToGet, 'utf8');
-            } else {
-                errorManagement(desiredTask + " <-- incorrect desired task for the dict");
-                return undefined;
+            } catch (err) {
+                errorManagement(err,
+                    desiredTask +
+                    " <-- error retrieving the task");
             }
-        } catch (err) {
-            errorManagement(err,
-                desiredTask +
-                " <-- error retrieving the task");
+        } else {
+            errorManagement(desiredTask + " <-- incorrect desired task for the dict");
+            throw new SyntaxError("Task " + desiredTask + " seems to be not existing...");
         }
     }
 
     async saveTask(task) {
+        let syntaxError = false;
         try {
             let jsonTask = task;
             // Parsed to JSON to check if is a correct formatting
@@ -52,13 +53,21 @@ class Database {
                 );
                 // After saving the file, I update the db
                  await updateDB(this);
-            } else errorManagement(new SyntaxError("Trying to save task with incorrect format"));
+                return;
+            } else {
+                errorManagement("Trying to save task with incorrect format");
+                syntaxError = true;
+            }
         } catch (err) {
             errorManagement(err, "Error parsing or saving JSON task.");
         }
+        if (syntaxError){
+            throw new SyntaxError("Trying to save task with incorrect format.");
+        } else throw new Error("Probably and internal error occurred.")
     }
 
     async deleteTask(task) {
+        let error = false
         task = parseInt(task);
         try {
             if (this.taskDict.has(task)) {
@@ -67,9 +76,15 @@ class Database {
                 console.log("DELETED following task: " + taskToDelete);
             } else console.log("WARNING: no key in taskDict for task " + task, typeof (task));
         } catch (err) {
-            errorManagement(err, "Error deleting this task: " + task);
+            error = err;
+            let message = "Error deleting this task: " + task
+            error.message = message
+            errorManagement(err, message);
         }
         await updateDB(this);
+        if (error) {
+            throw error;
+        }
     }
 
 }

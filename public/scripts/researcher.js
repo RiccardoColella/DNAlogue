@@ -50,6 +50,7 @@ Vue.component('chat', {
 
         eventBus.$on('textReadyToBeModified', function (text) {
             self.currentMessage = text;
+            self.onSubmit();
         });
     }
 });

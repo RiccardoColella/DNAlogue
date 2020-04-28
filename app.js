@@ -28,24 +28,31 @@ let uploading = multer({
     })
 });
 
-
+// ---------------------------!!!---------------------------- //
+// -----------------------CHANGE HERE------------------------ //
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/user.html');
 });
 
 app.get('/wizard', function (req, res) {
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/researcher.html');
 });
 
 
 app.get('/tasks', function (req, res) {
     console.log("Requested: GET /tasks");
-    let tasks = db.getTasks();
-    res.send(tasks);
+    db.getTasks().then((tasks) => {
+        res.send(tasks);
+    })
+    // let tasks = db.getTasks();
+    // res.send(tasks);
 });
 
 app.get('/tasks/:taskid', function (req, res) {
     console.log("Requested: GET /tasks/" + req.params.taskid);
+    // db.getTaskSync(req.params.taskid).then((task) => {
+    //     res.send(task);
+    // })
     let task = db.getTaskSync(req.params.taskid);
     res.send(task);
 });

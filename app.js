@@ -3,6 +3,7 @@ const app = express();
 const http = require('http').Server(app);
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const taskscontroller = require('./model/tasks-controller.js');
 const socketIO = require('./services/socketio-communication.js');
 const database = require('./model/tasksmanager.js');
 
@@ -28,7 +29,6 @@ let uploading = multer({
     })
 });
 
-
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
@@ -37,30 +37,13 @@ app.get('/wizard', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+app.get('/tasks', taskscontroller.getTasks);
 
-app.get('/tasks', function (req, res) {
-    console.log("Requested: GET /tasks");
-    let tasks = db.getTasks();
-    res.send(tasks);
-});
+app.get('/tasks/:taskid', taskscontroller.getTask);
 
-app.get('/tasks/:taskid', function (req, res) {
-    console.log("Requested: GET /tasks/" + req.params.taskid);
-    let task = db.getTaskSync(req.params.taskid);
-    res.send(task);
-});
+app.delete('/tasks/:taskid', taskscontroller.deleteTask);
 
-app.delete('/tasks/:taskid', function (req, res) {
-    console.log("Requested: DELETE /tasks/:taskid");
-    db.deleteTask(req.params.taskid);
-    console.log("Task " + req.params.taskid + " should have been deleted");
-    res.send("Task " + req.params.taskid + " eliminato.");
-});
-
-app.post('/tasks/:taskid', function (req, res) {
-    db.saveTask(req.body);
-    res.send("Adding or updating task + " + req.params.taskid);
-});
+app.post('/tasks/:taskid', taskscontroller.setTask);
 
 app.post('/upload', uploading.single("image"), function(req, res) {
     console.log("WOOOOW! image uploaded");
@@ -71,4 +54,8 @@ http.listen(port, function(){
     console.log('listening on *:' + port);
 });
 
-setTimeout(() => {console.log(db.getTasks());}, 1000);
+setTimeout(() => {
+    db.getTasks().then( (res) => {
+        console.log(res);
+    });
+}, 1000);

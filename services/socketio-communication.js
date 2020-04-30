@@ -36,9 +36,15 @@ function onChatConnection(socket){
     });
 
     // not tested
-    socket.on('Push img', (image) =>{
+    socket.on('Push img', (image) => {
         sendMessageTo(userSocket, 'Update image', image);
     });
+
+    socket.on('GMQL http request', (options) => {
+        GenoSurf.httpRequest(options).then(response => {
+            sendMessageTo(wizardSocket, response)
+        });
+    })
 }
 
 function sendToChatParticipants(e, message){

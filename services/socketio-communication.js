@@ -1,8 +1,9 @@
-var io;
-var userSocket;
-var wizardSocket;
-var chat;
-var wizardRE = /.*\/wizard.*/;
+const httpAPI = require('./httpAPI.js');
+let io;
+let userSocket;
+let wizardSocket;
+let chat;
+let wizardRE = /.*\/wizard.*/;
 const chatParticipants = 'chat participants';
 
 function startIO(http) {
@@ -41,7 +42,7 @@ function onChatConnection(socket){
     });
 
     socket.on('GMQL http request', (options) => {
-        GenoSurf.httpRequest(options).then(response => {
+        httpAPI.httpRequest('http://geco.deib.polimi.it', options).then(response => {
             sendMessageTo(wizardSocket, response)
         });
     })

@@ -59,14 +59,14 @@ Vue.component('tabs', {
     template: `
     <div id="tabs">
         <div class="tabs">
-            <div>
-                <span :class="{ activeTab: selectedTab == index }"
-                      v-for="(tab, index) in tabs" 
-                      :key="index"
-                      @click="selectedTab = index">
-                      {{ tabs[index].Title }}
-                </span>
+
+            <div :class="{ activeTab: selectedTab == index }"
+                v-for="(tab, index) in tabs" 
+                :key="index"
+                @click="selectedTab = index">
+                {{ tabs[index].Title }}
             </div>
+
         </div>
         <div class="tab-content"> 
             <div v-if="tabs.length !== 0">

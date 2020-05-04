@@ -54,14 +54,15 @@ Vue.component('tabs', {
     template: `
     <div id="tabs">
         <div class="tabs">
-            <div>
-                <span :class="{ activeTab: selectedTab == index }"
-                      v-for="(tab, index) in tabs" 
-                      :key="index"
-                      @click="selectedTab = index">
-                      {{ tabs[index].title }}
-                </span>
+
+            <div :class="{ activeTab: selectedTab == index }"
+                v-for="(tab, index) in tabs" 
+                :key="index"
+                @click="selectedTab = index">
+                {{ tabs[index].title }}
+                <span class="close" @click.stop="closeTab(index)">x</span>
             </div>
+
         </div>
         <div class="tab-content"> 
             <div v-if="tabs.length !== 0">
@@ -79,6 +80,13 @@ Vue.component('tabs', {
         }
     },
     methods: {
+
+        closeTab: function (index) {    
+            this.tabs.splice(index, 1);
+
+            if (this.selectedTab > (this.tabs.length - 1))
+                this.selectedTab = this.selectedTab - 1;
+        }
 
     },
     mounted() {

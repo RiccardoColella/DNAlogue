@@ -99,7 +99,35 @@ html, body {
 
 #tabs > .tabs {
     grid-area: tabs-links;
+    display: flex;
+    flex-direction: row;
+    background-color: #b9b098;
+    
 }
+
+.tabs > div {
+    padding-left: 0.5em;
+    padding-right: 2em;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    border: 1px solid rgb(109, 109, 109);
+    border-width: 0px 1px 1px 0px;
+    background-color: #b9b098;
+    position: relative;
+}
+
+.tabs .close {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    padding-right: 0.5em;
+    transform: translate(0%, -50%);
+}
+
+.close:hover {
+    background: #bbb;}
 
 #tabs > .tab-content {
     grid-area: tab-content;
@@ -155,6 +183,7 @@ form.chat-element button {
     max-width: 20%;
 }
 
-.activeTab {
-    text-decoration: underline;
+.tabs > div.activeTab {
+    border-width: 0px 1px 0px 0px;
+    background-color: #fff6f6
 }

@@ -17,7 +17,7 @@ class Database {
 
     async getTasks() {
         let db = this;
-        return ls.log('info', "Updating DB before getting tasks...")
+        return ls.debug("Updating DB before getting tasks...")
             .then( function () {
                 return updateDB(db);
             }).then( function () {

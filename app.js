@@ -71,6 +71,13 @@ setTimeout(() => {
     });
 }, 2000);
 
+/*
+setTimeout(() => {
+    db.getTasks().then( (res) => {
+        console.log(res);
+    });
+}, 2000);
+
 let options = {
     'method': 'GET',
     'hostname': 'geco.deib.polimi.it',

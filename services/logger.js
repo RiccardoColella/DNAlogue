@@ -1,27 +1,34 @@
 const winston = require('winston');
-actualTime = () => {
-    return new Date(Date.now()).toUTCString();
-};
+
+dateFormat = () => {
+    return new Date(Date.now()).toUTCString()
+}
 
 class LoggerService {
     constructor(route) {
         this.log_data = null;
-        this.route = route;
-        const logger = winston.createLogger({
+        this.route = route
+        this.logger = winston.createLogger({
             transports: [
-                new winston.transports.Console(),
+                new winston.transports.Console({
+                }),
                 new winston.transports.File({
-                    filename: `./logs/${route}.log`
+                    filename: `./logs/nomeacaso.log`
                 })
             ],
             format: winston.format.printf((info) => {
-                let message = `${actualTime()} | ${info.level.toUpperCase()} | ${route}.log | ${info.message} | `;
-                message = info.obj ? message + `data:${JSON.stringify(info.obj)} | ` : message;
+                let message = `${dateFormat()} | ${info.level.toUpperCase()} | ${this.route} | ${info.message} | `;
+                message = info.obj ?
+                    message + ( typeof info.obj === 'object' ?
+                        `\ndata:${JSON.stringify(info.obj, null, 4)} | ` :
+                        "\ndata: " + info.obj + " | " ):
+                    message;
+                        //`\ndata:${JSON.stringify(info.obj, null, 4)} | ` : message;
                 message = this.log_data ? message + `log_data:${JSON.stringify(this.log_data)} | ` : message;
                 return message;
             })
         });
-        this.logger = logger;
+
         return this;
     }
 
@@ -29,13 +36,19 @@ class LoggerService {
         this.log_data = log_data;
     }
 
-    async log(message, obj) {
-        if (obj !== "undefined")
-            this.logger.log('info', message, {
+    async log(level, message, obj) {
+        if (!(typeof obj === "undefined"))
+            this.logger.log(level, message, {
                 obj
             });
         else
-            this.logger.log('info', message);
+            this.logger.log(level, message);
+        }
+    async info(message, obj) {
+        obj ?
+        this.logger.log('info', message, {
+            obj
+        }) : this.logger.log("info", message);
     }
 
     async debug(message, obj) {
@@ -48,7 +61,7 @@ class LoggerService {
     }
 
     async error(message, obj) {
-        if (obj !== "undefined")
+        if (!(typeof obj === "undefined"))
             this.logger.log('error', message, {
                 obj
             });

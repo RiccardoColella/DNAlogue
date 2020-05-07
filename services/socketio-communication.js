@@ -1,8 +1,9 @@
-var io;
-var userSocket;
-var wizardSocket;
-var chat;
-var wizardRE = /.*\/wizard.*/;
+const httpAPI = require('./httpAPI.js');
+let io;
+let userSocket;
+let wizardSocket;
+let chat;
+let wizardRE = /.*\/wizard.*/;
 const chatParticipants = 'chat participants';
 
 function startIO(http) {
@@ -36,11 +37,17 @@ function onChatConnection(socket){
     });
 
     // not tested
-    socket.on('Push img', (image) =>{
+    socket.on('Push img', (image) => {
         sendToChatParticipants('Update image', image);
         // sendMessageTo(userSocket, 'Update image', image);
         console.log("Immagine pushata");
     });
+
+    socket.on('GMQL http request', (options) => {
+        httpAPI.httpRequest('http://geco.deib.polimi.it', options).then(response => {
+            sendMessageTo(wizardSocket, response)
+        });
+    })
 }
 
 function sendToChatParticipants(e, message){

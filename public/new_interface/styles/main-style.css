@@ -1,0 +1,50 @@
+/*  The width and height properties (and min/max properties) includes 
+/   content, padding and border */
+* {
+    box-sizing: border-box;
+}
+
+/*  Just removing default browser padding/margin */
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* MAIN CONTAINER of the whole app - MAIN GRID */
+.main-container { /* see specific css for child elements*/
+    height: 100vh;
+    width: 100vw;
+    padding: 1em;
+    
+    display: grid;
+
+    column-gap: 1em;
+    row-gap: 1em;
+}
+
+.child-title {
+    position: relative; /* needed to correctly place its children */
+}
+
+/* PURE STYLE */
+
+/* page title*/
+.child-title > h2 {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* The main child containers style */
+.child-container {
+    border-width: thin;
+    border-style: hidden;
+    border-radius: 0.5em;
+}

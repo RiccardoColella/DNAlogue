@@ -1,0 +1,39 @@
+/*  HEX: #bccad6 - clear sort of blue
+/   HEX: #8d9db6 - sort of blue
+/   HEX: #667292 - dark sort of blue
+/   HEX: #f1e3dd - base */
+
+/* BASE STYLE */
+
+html,
+body {
+    background-color: #8d9db6;
+}
+
+/*  USER SPECIFIC MAIN CONTAINER of the whole app - MAIN GRID */
+.main-container {
+    grid-template-columns: 23em auto;
+    grid-template-rows: 3em auto;
+    grid-template-areas: 
+        "title tabs"
+        "chat tabs";
+}
+
+.child-title {
+    grid-area: title;
+}
+
+.child-chat {
+    grid-area: chat;
+}
+
+.child-tabs {
+    grid-area: tabs;
+}
+
+/* PURE STYLE */
+
+/* The main child containers style - USER SIDE */
+.child-container {
+    background-color: #f1e3dd;
+}

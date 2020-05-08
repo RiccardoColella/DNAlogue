@@ -1,11 +1,11 @@
-const database = require('./tasksmanager.js');
+const database = require('./tasks-manager.js');
 const loggerService = require('../services/logger.js');
 
 let ls = new loggerService('tasks-controller');
 const db = new database().getInstance();
 
 exports.getTasks = function (req, res) {
-    ls.info("Requested to getTasks!", req.originalUrl)
+    ls.info("Requested to getTasks" + " at " + req.originalUrl)
         .then( () => {
             return db.getTasks();
         }).then((tasks) => {
@@ -15,7 +15,7 @@ exports.getTasks = function (req, res) {
 };
 
 exports.getTask = function (req, res) {
-    ls.info("Requested to get a specific tasks: " + req.params.taskid, req.originalUrl)
+    ls.info("Requested to get a specific tasks: " + req.params.taskid + " at " + req.originalUrl)
         .then( function () {
             return db.getTaskSync(req.params.taskid);
         })
@@ -29,7 +29,7 @@ exports.getTask = function (req, res) {
 }
 
 exports.deleteTask = function (req, res) {
-    ls.info("Requested to delete a tasks: " + req.params.taskid, req.originalUrl)
+    ls.info("Requested to delete a tasks: " + req.params.taskid + " at " + req.originalUrl)
         .then( function () {
             return db.deleteTask(req.params.taskid);
         })
@@ -55,6 +55,10 @@ exports.setTask = function (req, res) {
         })
         .catch(reason => errorManager(reason, res, req));
 };
+
+exports.getDB = function () {
+    return db;
+}
 
 function errorManager(error, res, req) {
     let message = error.name + ": " + error.message;

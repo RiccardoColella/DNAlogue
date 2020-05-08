@@ -6,7 +6,6 @@ const multer = require('multer');
 const loggerService = require('./services/logger.js');
 const tasksController = require('./model/tasks-controller.js');
 const socketIO = require('./services/socketio-communication.js');
-const database = require('./model/tasksmanager.js');
 const httpAPI = require('./services/httpAPI.js');
 
 const port = 4500;
@@ -18,7 +17,7 @@ app.use(express.static('\wizard'));
 let ls = new loggerService('app');
 
 socketIO.startIO(http);
-const db = new database().getInstance();
+const db = tasksController.getDB();
 
 let uploading = multer({
     storage: multer.diskStorage({
@@ -71,7 +70,7 @@ setTimeout(() => {
     });
 }, 2000);
 
-/*
+
 setTimeout(() => {
     db.getTasks().then( (res) => {
         console.log(res);
@@ -86,9 +85,10 @@ let options = {
     },
     'maxRedirects': 20
 };
-/*
+
 setTimeout(() => {
-    httpAPI.httpRequest('http://geco.deib.polimi.it', options).then(response => {
-        console.log(response.body)});
+    httpAPI.httpRequest('http://geco.deib.polimi.it', options).catch( reason => {
+        ls.logSync('info', "Unexpected problem executing httpRequest", reason);
+    });
 }, 3000);
 */

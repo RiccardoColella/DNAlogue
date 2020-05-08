@@ -13,7 +13,7 @@ class LoggerService {
                 new winston.transports.Console({
                 }),
                 new winston.transports.File({
-                    filename: `./logs/nomeacaso.log`
+                    filename: `./logs/log.log`
                 })
             ],
             format: winston.format.printf((info) => {
@@ -43,12 +43,29 @@ class LoggerService {
             });
         else
             this.logger.log(level, message);
-        }
+    }
+
+    logSync(level, message, obj) {
+        if (!(typeof obj === "undefined"))
+            this.logger.log(level, message, {
+                obj
+            });
+        else
+            this.logger.log(level, message);
+    }
+
     async info(message, obj) {
         obj ?
-        this.logger.log('info', message, {
-            obj
-        }) : this.logger.log("info", message);
+            this.logger.log('info', message, {
+                obj
+            }) : this.logger.log("info", message);
+    }
+
+    infoSync(message, obj) {
+        obj ?
+            this.logger.log('info', message, {
+                obj
+            }) : this.logger.log("info", message);
     }
 
     async debug(message, obj) {
@@ -60,7 +77,25 @@ class LoggerService {
             this.logger.log('debug', message);
     }
 
+    debugSync(message, obj) {
+        if (obj !== "undefined")
+            this.logger.log('debug', message, {
+                obj
+            });
+        else
+            this.logger.log('debug', message);
+    }
+
     async error(message, obj) {
+        if (!(typeof obj === "undefined"))
+            this.logger.log('error', message, {
+                obj
+            });
+        else
+            this.logger.log('error', message);
+    }
+
+    errorSync(message, obj) {
         if (!(typeof obj === "undefined"))
             this.logger.log('error', message, {
                 obj

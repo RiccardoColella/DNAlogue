@@ -1,8 +1,8 @@
-const tasksFolder = './model/tasks/';
 const fs = require('fs');
+const tasksFolder = './model/tasks/';
 const loggerService = require('../services/logger.js');
 
-let ls = new loggerService('tasksmanager');
+let ls = new loggerService('tasks-manager');
 
 class Database {
     constructor() {

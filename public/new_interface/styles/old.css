@@ -169,6 +169,7 @@ form.chat-element input {
     padding-left: 1em;
     border: 0;
     width: 80%;
+    border: none;
 }
 
 form.chat-element button {

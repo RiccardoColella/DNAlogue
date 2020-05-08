@@ -1,19 +1,19 @@
-/*  HEX: #fbefcc - base
-/   HEX: #f9ccac - clear sort of orange 
-/   HEX: #f4a688 - sort of orange
-/   HEX: #e0876a - dark sort of orange */
-
-/* BASE STYLE */
+/*  BASE STYLE ------------------------------------------------------------------*/
 
 html,
 body {
-    background-color: #f4a688;
+    background-color: #888888;
 }
 
-/* USER SPECIFIC MAIN CONTAINER of the whole app - MAIN GRID */
+/* The main child containers style - RESEARCHER SIDE*/
+.child-container {
+    background-color: #f0f0f0;
+}
+
+/* USER SPECIFIC MAIN CONTAINER of the whole app - MAIN GRID --------------------*/
 .main-container {
     grid-template-columns: 23em auto auto;
-    grid-template-rows: 3em auto auto;
+    grid-template-rows: 3em auto 20em;
     grid-template-areas: 
         "title tasks tabs"
         "chat tasks tabs"
@@ -40,9 +40,4 @@ body {
     grid-area: task-manager;
 }
 
-/* PURE STYLE */
-
-/* The main child containers style - RESEARCHER SIDE*/
-.child-container {
-    background-color: #fbefcc;
-}
+/*  CHAT ------------------------------------------------------------------------*/

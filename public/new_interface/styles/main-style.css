@@ -1,3 +1,5 @@
+/*  INITIAL SETTINGS --------------------------------------------------------- */
+
 /*  The width and height properties (and min/max properties) includes 
 /   content, padding and border */
 * {
@@ -15,7 +17,8 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* MAIN CONTAINER of the whole app - MAIN GRID */
+/*  MAIN CONTAINER of the whole app - MAIN GRID --------------------------- */
+
 .main-container { /* see specific css for child elements*/
     height: 100vh;
     width: 100vw;
@@ -27,14 +30,34 @@ body {
     row-gap: 1em;
 }
 
+.child-container {
+    border-width: thin;
+    border-style: hidden;
+    border-radius: 0.5em;
+
+    overflow: auto; /* IMPORTANT: allows to hide overflow in child elements */
+}
+
 .child-title {
     position: relative; /* needed to correctly place its children */
 }
 
-/* PURE STYLE */
+/*  This is the same on both user and researcher, specific formatting is done
+/   applying different class for different actors, through js */
+.child-chat {
+    padding: none;
 
-/* page title*/
-.child-title > h2 {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto 2em;
+    grid-template-areas: 
+        "chatbox"
+        "newmessagebox";
+}
+
+/*  TITLE -----------------------------------------------------------------------*/
+
+.child-title > h2 { /* page title*/
     margin: 0;
     position: absolute;
     top: 50%;
@@ -42,9 +65,60 @@ body {
     transform: translate(-50%, -50%);
 }
 
-/* The main child containers style */
-.child-container {
+/*  CHAT -----------------------------------------------------------------------*/
+
+.message-list {
+    grid-area: chatbox;
+    list-style-type: none; /* remove dots on the items*/
+    margin: 0; 
+    padding: 0.5em;
+
+    overflow: auto;
+}
+
+.message-list::-webkit-scrollbar { /* remove scrollbar */
+    display: none;
+}
+
+.single-message-item {
+    margin-bottom: 0.5em;
+    padding: 0.5em;
     border-width: thin;
     border-style: hidden;
     border-radius: 0.5em;
+
+    max-width: 80%;
+    clear: both; /* prevent other li to potition themself right or left */
 }
+
+.foreigner-message-item { /* messages from outside*/
+    float: left;
+    background-color: burlywood;
+}
+
+.my-message-item { /* my messages */
+    float: right;
+    background-color: cornflowerblue;
+}
+
+.new-message-form {
+    grid-area: newmessagebox;
+    display: flex; /* prevent default to create gap between input and button */
+    height: 100%;
+    border-top: thin solid rgb(192, 192, 183);
+}
+
+.new-message-form input {
+    height: 100%;
+    width: 70%;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border: none;
+}
+
+.new-message-form button {
+    height: 100%;
+    width: 30%;
+    border: none;
+}
+

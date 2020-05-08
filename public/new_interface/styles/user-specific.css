@@ -3,14 +3,19 @@
 /   HEX: #667292 - dark sort of blue
 /   HEX: #f1e3dd - base */
 
-/* BASE STYLE */
+/*  BASE STYLE --------------------------------------------------------------------*/
 
 html,
 body {
     background-color: #8d9db6;
 }
 
-/*  USER SPECIFIC MAIN CONTAINER of the whole app - MAIN GRID */
+/* The main child containers style - USER SIDE*/
+.child-container {
+    background-color: #f1e3dd;
+}
+
+/*  USER SPECIFIC MAIN CONTAINER of the whole app - MAIN GRID ------------------- */
 .main-container {
     grid-template-columns: 23em auto;
     grid-template-rows: 3em auto;
@@ -31,9 +36,4 @@ body {
     grid-area: tabs;
 }
 
-/* PURE STYLE */
-
-/* The main child containers style - USER SIDE */
-.child-container {
-    background-color: #f1e3dd;
-}
+/*  CHAT ------------------------------------------------------------------------*/

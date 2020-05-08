@@ -1,9 +1,22 @@
-var io;
-var userSocket;
-var wizardSocket;
-var chat;
-var wizardRE = /.*\/wizard.*/;
+const httpAPI = require('./httpAPI.js');
+const loggerService = require('../services/logger.js');
+
+let ls = new loggerService('SocketIO');
+let io;
+let userSocket;
+let wizardSocket;
+let chat;
+let wizardRE = /.*\/wizard.*/;
 const chatParticipants = 'chat participants';
+const events = {
+    chatMsg: 'chat message',
+    wizMsg: 'wizard message',
+    usrMsg: 'user message',
+    imgPush: 'Push img',
+    sendUpImg: 'Update image',
+    GMQLreq: 'GMQL http request',
+    HTTPres: 'Send to wizard results'
+}
 
 function startIO(http) {
     io = require("socket.io")(http);
@@ -17,30 +30,45 @@ function onChatConnection(socket){
     //console.log("New socket: " + JSON.stringify(socket.handshake, null, 4));
     if (wizardRE.test(socket.handshake.headers.referer)){
         wizardSocket = socket;
-        console.log("New wizard connected to chat");
-        // TODO implement log of the wizard connected
+        ls.infoSync("New wizard connected to the chat");
     } else {
         userSocket = socket;
-        console.log("New user connected to chat");
-        // TODO implement log of the user connected
+        ls.infoSync("New user connected to the chat");
     }
     socket.join(chatParticipants);
-    // TODO implement log of the join
-    socket.on('chat message', (msg) => {
+    ls.logSync('debug', "Joining " + socket + " at chatParticipants room")
+    socket.on(events.chatMsg, (msg) => {
+        let eventName;
+        let message;
         if (socket === wizardSocket){
-            sendToChatParticipants('wizard message', msg);
+            eventName = events.wizMsg;
+            message = {
+                eventName: eventName,
+                message : msg
+            };
+            ls.infoSync("Received message from wizardSocket. Forwarding it to chatParticipants", message);
         } else {
-            sendToChatParticipants('user message', msg);
+            eventName = events.usrMsg;
+            message = {
+                eventName: eventName,
+                message : msg
+            };
+            ls.infoSync("Received message from a non wizardSocket. Forwarding it to chatParticipants", message);
         }
-        // TODO implement log of the event
+        sendToChatParticipants(eventName, msg);
     });
 
-    // not tested
-    socket.on('Push img', (image) =>{
-        sendToChatParticipants('Update image', image);
-        // sendMessageTo(userSocket, 'Update image', image);
-        console.log("Immagine pushata");
+    socket.on(events.imgPush, (image) => {
+        ls.infoSync("Received 'push img' event for image at: " + image);
+        sendToChatParticipants(events.sendUpImg, image);
     });
+
+    socket.on(events.GMQLreq, (options) => {
+        ls.infoSync("GMQL request incoming", options);
+        httpAPI.httpRequest('http://geco.deib.polimi.it', options).then(response => {
+            sendToChatParticipants(events.HTTPres, response)
+        });
+    })
 }
 
 function sendToChatParticipants(e, message){

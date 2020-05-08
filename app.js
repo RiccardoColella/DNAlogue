@@ -3,8 +3,10 @@ const app = express();
 const http = require('http').Server(app);
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const loggerService = require('./services/logger.js');
+const tasksController = require('./model/tasks-controller.js');
 const socketIO = require('./services/socketio-communication.js');
-const database = require('./model/tasksmanager.js');
+const httpAPI = require('./services/httpAPI.js');
 
 const port = 4500;
 
@@ -12,8 +14,10 @@ app.use(bodyParser.json());
 app.use(express.static('\public'));
 app.use(express.static('\wizard'));
 
+let ls = new loggerService('app');
+
 socketIO.startIO(http);
-const db = new database().getInstance();
+const db = tasksController.getDB();
 
 let uploading = multer({
     storage: multer.diskStorage({
@@ -28,54 +32,63 @@ let uploading = multer({
     })
 });
 
-// ---------------------------!!!---------------------------- //
-// -----------------------CHANGE HERE------------------------ //
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/public/user.html');
+    ls.info("Required page at '/'.").then( () => {
+        res.sendFile(__dirname + '/public/user.html');
+    });
 });
 
 app.get('/wizard', function (req, res) {
-    res.sendFile(__dirname + '/public/researcher.html');
+    ls.info("Required page at '/'.").then( () => {
+        res.sendFile(__dirname + '/public/researcher.html');
+    });
 });
 
+app.get('/tasks', tasksController.getTasks);
 
-app.get('/tasks', function (req, res) {
-    console.log("Requested: GET /tasks");
-    db.getTasks().then((tasks) => {
-        res.send(tasks);
-    })
-    // let tasks = db.getTasks();
-    // res.send(tasks);
-});
+app.get('/tasks/:taskid', tasksController.getTask);
 
-app.get('/tasks/:taskid', function (req, res) {
-    console.log("Requested: GET /tasks/" + req.params.taskid);
-    // db.getTaskSync(req.params.taskid).then((task) => {
-    //     res.send(task);
-    // })
-    let task = db.getTaskSync(req.params.taskid);
-    res.send(task);
-});
+app.delete('/tasks/:taskid', tasksController.deleteTask);
 
-app.delete('/tasks/:taskid', function (req, res) {
-    console.log("Requested: DELETE /tasks/:taskid");
-    db.deleteTask(req.params.taskid);
-    console.log("Task " + req.params.taskid + " should have been deleted");
-    res.send("Task " + req.params.taskid + " eliminato.");
-});
-
-app.post('/tasks/:taskid', function (req, res) {
-    db.saveTask(req.body);
-    res.send("Adding or updating task + " + req.params.taskid);
-});
+app.post('/tasks/:taskid', tasksController.setTask);
 
 app.post('/upload', uploading.single("image"), function(req, res) {
-    console.log("WOOOOW! image uploaded");
-    res.sendStatus(200);
+    ls.info("Received request at '/upload'.", req.body).then( () => {
+        res.sendStatus(200);
+    });
 });
 
-http.listen(port, function(){
-    console.log('listening on *:' + port);
+http.listen(port, function(info){
+    ls.log('info', "Server listening on port " + port, {'port': port}).catch( () => {
+        throw new Error("Unexpected error while trying to log in http.listen callback...\n" + info);
+    });
 });
+/*
+setTimeout(() => {
+    db.getTasks().then( (res) => {
+        console.log(res);
+    });
+}, 2000);
 
-setTimeout(() => {console.log(db.getTasks());}, 1000);
+
+setTimeout(() => {
+    db.getTasks().then( (res) => {
+        console.log(res);
+    });
+}, 2000);
+
+let options = {
+    'method': 'GET',
+    'hostname': 'geco.deib.polimi.it',
+    'path': '/genosurf/api/field',
+    'headers': {
+    },
+    'maxRedirects': 20
+};
+
+setTimeout(() => {
+    httpAPI.httpRequest('http://geco.deib.polimi.it', options).catch( reason => {
+        ls.logSync('info', "Unexpected problem executing httpRequest", reason);
+    });
+}, 3000);
+*/

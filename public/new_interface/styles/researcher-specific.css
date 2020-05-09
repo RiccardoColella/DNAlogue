@@ -12,7 +12,7 @@ body {
 
 /* USER SPECIFIC MAIN CONTAINER of the whole app - MAIN GRID --------------------*/
 .main-container {
-    grid-template-columns: 23em auto auto;
+    grid-template-columns: 23em 1fr 1fr;
     grid-template-rows: 3em auto 20em;
     grid-template-areas: 
         "title tasks tabs"
@@ -30,6 +30,16 @@ body {
 
 .child-tasks {
     grid-area: tasks;
+    
+    padding: none;
+
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 30% 2em auto;
+    grid-template-areas: 
+        "tasks-selector"
+        "tasks-newtask"
+        "task-content";
 }
 
 .child-tabs {
@@ -41,3 +51,60 @@ body {
 }
 
 /*  CHAT ------------------------------------------------------------------------*/
+
+/*  TABS -----------------------------------------------------------------------*/
+
+.tab-selector li {
+    padding-right: 0.5em; /*    there are no close button on researcher side, so 
+                                no spacing needed */
+}
+
+.tab-selector .selected {
+    background-color: #f0f0f0;
+}
+
+/*  TASKS -----------------------------------------------------------------------*/
+
+.tasks-selector {
+    grid-area: tasks-selector;
+    margin: 0.5em;
+    border-radius: 0.5em;
+    
+    background-color: white;
+}
+
+.tasks-newtask {
+    grid-area: tasks-newtask;
+
+    display: flex; /* prevent default to create gap between input and button */
+    justify-content: center;
+    height: 100%;
+    margin-left: 1em;
+    margin-right: 1em;
+    padding-bottom: 0.5em;
+    border-bottom: thin solid gray;
+}
+
+.tasks-newtask input {
+    height: 100%;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border: none;
+}
+
+.tasks-newtask button {
+    height: 100%;
+    border: thin solid gray;
+}
+
+.remove-task-button {
+    margin-left: 1em;
+}
+
+.tasks-newtask button:hover {
+    background-color: rgb(202, 202, 202);
+}
+
+.task-content {
+    grid-area: task-content ;
+}

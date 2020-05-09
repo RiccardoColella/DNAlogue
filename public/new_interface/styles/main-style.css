@@ -55,6 +55,17 @@ body {
         "newmessagebox";
 }
 
+.child-tabs {
+    padding: 0;
+
+    display: grid;
+    grid-template-columns: 25% auto;
+    grid-template-rows: auto;
+    grid-template-areas: 
+        "tab-selector tab-content"
+        ;
+}
+
 /*  TITLE -----------------------------------------------------------------------*/
 
 .child-title > h2 { /* page title*/
@@ -122,3 +133,69 @@ body {
     border: none;
 }
 
+.new-message-form button:hover {
+    background-color: rgb(202, 202, 202);
+}
+
+/*  TABS -----------------------------------------------------------------------*/
+
+.tab-selector {
+    grid-area: tab-selector;
+    list-style-type: none; /* remove dots on the items*/
+    margin: 0; 
+    padding: 0;
+
+    overflow: auto;
+}
+
+.tab-selector::-webkit-scrollbar { /* remove scrollbar */
+    display: none;
+}
+
+.tab-selector li {
+    cursor: pointer;
+    position: relative;
+    padding: 0.5em;
+    padding-right: 1.5em;
+    border-bottom: thin solid rgb(192, 192, 183);
+    border-right: thin solid rgb(192, 192, 183);
+
+    background-color: white;
+}
+
+.tab-selector li.selected { /* see specific css for selected tab style*/
+    border-right: none;
+}
+
+.tab-selector li:hover {
+    background-color: #eee;
+}
+
+.tab-selector span {
+    padding: 0.3em;
+    margin-right: 0.3em;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    transform: translate(0%, -50%);
+}
+
+.tab-selector span:hover {
+    background: #bbb;
+}
+
+.tab-content {
+    grid-area: tab-content;
+    padding: 0.5em;
+
+    overflow: auto;
+}
+
+.tab-content::-webkit-scrollbar { /* remove scrollbar */
+    display: none;
+}
+
+.tab-content img {
+    max-width: 100%;
+}

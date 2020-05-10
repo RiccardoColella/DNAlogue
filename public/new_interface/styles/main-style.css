@@ -171,7 +171,7 @@ body {
     background-color: #eee;
 }
 
-.tab-selector span {
+.tab-selector span.close-button {
     padding: 0.3em;
     margin-right: 0.3em;
     cursor: pointer;
@@ -181,7 +181,7 @@ body {
     transform: translate(0%, -50%);
 }
 
-.tab-selector span:hover {
+.tab-selector span.close-button:hover {
     background: #bbb;
 }
 

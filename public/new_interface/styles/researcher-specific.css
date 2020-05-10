@@ -35,10 +35,10 @@ body {
 
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 30% 2em auto;
+    grid-template-rows: 2em 30% auto;
     grid-template-areas: 
-        "tasks-selector"
         "tasks-newtask"
+        "tasks-selector"
         "task-content";
 }
 
@@ -48,6 +48,19 @@ body {
 
 .child-task-manager {
     grid-area: task-manager;
+    padding: 0.5em;
+
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 15% 15% auto;
+    grid-template-areas: 
+        "new-precompiled"
+        "new-image"
+        "new-APICall";
+}
+
+.child-task-manager::-webkit-scrollbar { /* remove scrollbar */
+    display: none;
 }
 
 /*  CHAT ------------------------------------------------------------------------*/
@@ -69,8 +82,14 @@ body {
     grid-area: tasks-selector;
     margin: 0.5em;
     border-radius: 0.5em;
+    border: thin solid black;
     
     background-color: white;
+    text-align: center;
+}
+
+.tasks-selector li {
+border-right: none; /* remove bordr introduced by tab-selector class*/
 }
 
 .tasks-newtask {
@@ -81,8 +100,8 @@ body {
     height: 100%;
     margin-left: 1em;
     margin-right: 1em;
-    padding-bottom: 0.5em;
-    border-bottom: thin solid gray;
+    padding-top: 0.5em;
+    
 }
 
 .tasks-newtask input {
@@ -105,6 +124,123 @@ body {
     background-color: rgb(202, 202, 202);
 }
 
+/*  Tasks content */
+
 .task-content {
     grid-area: task-content ;
+    margin: 0.5em;
+    border-radius: 0.5em;
+    border: thin solid black;
+}
+
+.task-content li {
+    padding-right: 1.5em;
+    border-right: none; /* remove bordr introduced by tab-selector class*/
+}
+
+.task-content span.close-button {
+    padding: 0.3em;
+    margin-right: 0.3em;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    transform: translate(0%, -50%);
+}
+
+.task-content span.close-button:hover {
+    background: #bbb;
+}
+
+.task-content img {
+    max-width: 40%;
+}
+
+.task-content span.image-description {
+    margin-left: 1em;
+    position: absolute;
+    top: 50%;
+    transform: translate(0%, -50%);
+    max-width: 50%;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.task-content form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.task-content button[name=callButton] {
+    width: 10%;
+}
+
+.task-content input[name=callMethod] {
+    text-align: center;
+    width: 15%;
+}
+
+.task-content input[name=callUrl] {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    width: 75%;
+}
+
+.task-content input[name=callParam] {
+    text-align: center;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: .5em;
+}
+
+/*  TASK MANAGER     ----------------------------------------------------------------*/
+
+.new-precompiled {
+    grid-area: new-precompiled;
+    border-bottom: thin solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.new-image {
+    grid-area: new-image;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: thin solid black;
+}
+
+.new-APICall {
+    grid-area: new-APICall;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 1em;
+}
+
+
+.new-APICall button[name=API-button] {
+    text-align: center;
+    width: 15%;
+}
+
+.new-APICall select[name=api-method] {
+    width: 15%;
+}
+
+.new-APICall input[name=API-url] {
+    width: 70%;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+.new-APICall textarea[name=API-script] {
+    width: 90%;
+    padding: .5em;
+    margin-top: 1em;
+    resize: vertical;
 }

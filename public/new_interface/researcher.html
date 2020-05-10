@@ -55,7 +55,7 @@
             </form>
         </div>
         <div class="child-tasks child-container">
-            <ul class="tab-selector tasks-selector">
+            <ul class="tasks-selector tab-selector">
                 <li class="selected">Task 1</li>
                 <li>Task 2</li>
                 <li>Task 2</li>
@@ -71,9 +71,24 @@
                 <button class="remove-task-button">Remove current Task</button>
             </form>
             
-            <div class="tasks-content">
-                
-            </div>
+            <ul class="task-content tab-selector">
+                <li>Risposta Precompilata<span class="fa fa-close close-button"></span></li>
+                <li>Risposta precompilata<span class="fa fa-close close-button"></span></li>
+                <li><img src="./images/genomic_3.png" alt=""><span class="image-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</span><span class="fa fa-close close-button"></span></li>
+                <li>
+                    <form action="">
+                        <button name="callButton">Invio</button>
+                        <input type="text" name="callMethod" value="DELETE" disabled>
+                        <input type="text" name="callUrl" value="/url/{id}" readonly>
+                        <input type="text" name="callParam" placeholder="id">
+                        <input type="text" name="callParam" placeholder="id">
+                    </form>
+                    <span class="fa fa-close close-button"></span>
+                </li>
+                <li>Tab 3</li>
+                <li>Tab 2</li>
+            </ul>
+            
         </div>
         <div class="child-tabs child-container">
             <ul class="tab-selector">
@@ -118,7 +133,27 @@
                 <img src="./images/genomic_1.jpg" alt="">
             </div>
         </div>
-        <div class="child-task-manager child-container"></div>
+        <div class="child-task-manager child-container">
+            <form class="new-precompiled" action="">
+                <input type="text" name="precompiled" placeholder="precompiled message">
+                <button name="precompiled-button">ADD</button>
+            </form>
+            <form class="new-image" action="">
+                <input type="file" name="image-choose">
+                <input type="submit" name="image-button">
+            </form>
+            <form class="new-APICall" action="">
+                <button name="API-button">ADD</button>
+                <select name="api-method">
+                    <option value="get">GET</option>
+                    <option value="post">POST</option>
+                    <option value="put">PUT</option>
+                    <option value="delete">DELETE</option>
+                  </select>
+                <input type="text" name="API-url" placeholder="URL here...">
+                <textarea name="API-script" rows="5" placeholder="Scipt here..."></textarea>
+            </form>
+        </div>
     </div>
 </body>
 </html>

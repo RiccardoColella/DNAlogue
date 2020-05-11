@@ -1,39 +1,23 @@
-<!doctype html>
-<html>
-  <head>
-    <title>DNALogue - User Side</title>
-    <link rel="stylesheet" type="text/css" href="styles/style.css">
-    <link rel="stylesheet" type="text/css" href="styles/style-user.css">
-  </head>
-  <body>
-
-    <div id="page">
-      <div id="app-container">
-        <div id="header-item">
-          <div class="box">
-            <div id="header">
-              <span>USER INTERFACE</span>
-            </div>
-          </div>
-        </div>
-        <div id="chat-item">
-          <div class="box">
-            <!-- Here the chat template -->
-            <chat></chat>
-          </div>
-        </div>
-        <div id="tabs-item">
-          <div class="box">
-            <!-- Here the tabs template -->
-            <tabs></tabs>
-          </div>
-        </div>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Side</title>
+    <link rel="stylesheet" href="./styles/main-style.css">
+    <link rel="stylesheet" href="./styles/user-specific.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div id="main-app" class="main-container">
+        <div class="child-title child-container"><h2>GeCo</h2></div>
+        <chat></chat>
+        <tabs></tabs>
     </div>
 
     <!-- Scripts under this comment -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="scripts/user.js"></script>
-  </body>
+
+</body>
 </html>

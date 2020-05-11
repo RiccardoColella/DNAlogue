@@ -5,23 +5,24 @@ var socket = io('/chat');
 // from server, it "reroute" this events inside Vue components
 var eventBus = new Vue();
 
-
+// -------------------------------- COMPONENTS -----------------------------------
 
 Vue.component('chat', {
     template: `
-    <div id="chat">
-        <div class="dialogue">
-            <ul>
-                <li v-for="message in messages">{{ message }}</li>
+        <div class="child-chat child-container">
+            <ul class="message-list" ref="messageList">
+                <li class="single-message-item" 
+                    v-bind:class="{'my-message-item': message.isMy, 'foreigner-message-item': message.isForeigner}" 
+                    v-for="(message, index) in messages" 
+                    :key="index">
+                    {{ message.text }}
+                </li>
             </ul>
-        </div>
-        <div class="form"> 
-            <form @submit.prevent="onSubmit" class="chat-element">
-                <input autocomplete="off" v-model="currentMessage">
+            <form @submit.prevent="onSubmit" class="new-message-form">
+                <input type="text" v-model="currentMessage" autocomplete="off" autofocus>
                 <button>Send</button>
             </form>
         </div>
-    </div>
     `,
     data: function () {
         return {
@@ -41,96 +42,30 @@ Vue.component('chat', {
         var self = this;
 
         eventBus.$on('userMessageReceived', function (userMessage) {
-            self.messages.push("USER: " + userMessage);
+            self.messages.push({isMy: true, isForeigner: false, text: userMessage});
+            self.$nextTick(() => {
+                self.$refs.messageList.lastChild.scrollIntoView({behavior: "smooth"});
+            })
         })
 
         eventBus.$on('wizardMessageReceived', function (wizardMessage) {
-            self.messages.push("ME: " + wizardMessage);
+            self.messages.push({isMy: false, isForeigner: true, text: wizardMessage});
+            self.$nextTick(() => {
+                self.$refs.messageList.lastChild.scrollIntoView({behavior: "smooth"});
+            })
         });
 
-        eventBus.$on('textReadyToBeModified', function (text) {
-            self.currentMessage = text;
-            self.onSubmit();
-        });
+        // eventBus.$on('textReadyToBeModified', function (text) {
+        //     self.currentMessage = text;
+        //     self.onSubmit();
+        // });
     }
 });
 
-Vue.component('tabs', {
-    template: `
-    <div id="tabs">
-        <div class="tabs">
-
-            <div :class="{ activeTab: selectedTab == index }"
-                v-for="(tab, index) in tabs" 
-                :key="index"
-                @click="selectedTab = index">
-                {{ tabs[index].Title }}
-            </div>
-
-        </div>
-        <div class="tab-content"> 
-            <div v-if="tabs.length !== 0">
-                <div>
-                    <p v-for="(text, index) in tabs[selectedTab].PrecompiledTexts"         
-                        :key="index"
-                        @click = "loadTextInChat(text)">
-                        {{text}}
-                    </p>
-                </div>
-                <div>
-                    <img v-for="(image, index) in tabs[selectedTab].Images"         
-                        :key="index"
-                        :src="image"
-                        @click="sendImageToUser(image)">
-                </div>
-                <!-- <form action="/upload" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file1">
-                    <input type="submit" value="Upload">
-                </form> -->
-
-            </div>
-        </div>
-    </div>
-    `,
-    data: function () {
-        return {
-            tabs: [],
-            selectedTab : 0,
-            tasksList: []
-        }
-    },
-    methods: {
-        sendImageToUser: function (image) {
-            socket.emit('Push img', image);
-            console.log(image + " pushed to user");
-        },
-        loadTextInChat: function (text) {
-            eventBus.$emit('textReadyToBeModified', text);
-        },
-        onImageSubmit: function () {
-
-        }
-    },
-    mounted() {
-
-        var self= this;
-
-        axios.get('/tasks').then( function (response) {
-
-            self.tasksList = response.data;
-
-            for (let i = 0; i < self.tasksList.length; i++) {
-                axios
-                    .get('/tasks/' + self.tasksList[i].Number.toString())
-                    .then(response => (self.tabs.push(response.data)));
-            }
-
-        });
-    }
-});
+// --------------------------------- MAIN APP ------------------------------------
 
 var app = new Vue({
-    el: '#page',
+    el: '#main-app',
     data: {
 
     },
@@ -139,7 +74,9 @@ var app = new Vue({
     }
 });
 
-// Follows a list of socket.io events received from server+
+// ----------------------------- EXTERNAL EVENTS ---------------------------------
+
+// Follows a list of socket.io events received from server
 
 socket.on('user message', function (msg) {
     eventBus.$emit('userMessageReceived', msg)

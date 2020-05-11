@@ -1,0 +1,13 @@
+tabImage = {
+    title: "",
+    isImage: true,
+    isHTML: false,
+    src: ""
+}
+
+tabHTML = {
+    title: "",
+    isImage: false,
+    isHTML: true,
+    htmlContent: ""
+}

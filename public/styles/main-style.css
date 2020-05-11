@@ -144,6 +144,7 @@ body {
     list-style-type: none; /* remove dots on the items*/
     margin: 0; 
     padding: 0;
+    background-color: rgb(243, 243, 243);
 
     overflow: auto;
 }

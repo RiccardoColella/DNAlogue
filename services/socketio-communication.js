@@ -8,6 +8,7 @@ let wizardSocket;
 let chat;
 let wizardRE = /.*\/wizard.*/;
 const chatParticipants = 'chat participants';
+const toWizard = 'Wizard chat'
 const events = {
     chatMsg: 'chat message',
     wizMsg: 'wizard message',
@@ -15,7 +16,10 @@ const events = {
     imgPush: 'Push img',
     sendUpImg: 'Update image',
     GMQLreq: 'GMQL http request',
-    HTTPres: 'Send to wizard results'
+    HTTPres: 'Send to wizard results',
+    tabClose: "tabClose",
+    tabSwitch: "tabSwitch"
+
 }
 
 function startIO(http) {
@@ -30,6 +34,7 @@ function onChatConnection(socket){
     //console.log("New socket: " + JSON.stringify(socket.handshake, null, 4));
     if (wizardRE.test(socket.handshake.headers.referer)){
         wizardSocket = socket;
+        socket.join(toWizard);
         ls.infoSync("New wizard connected to the chat");
     } else {
         userSocket = socket;
@@ -60,14 +65,24 @@ function onChatConnection(socket){
 
     socket.on(events.imgPush, (image) => {
         ls.infoSync("Received 'push img' event for image at: " + image);
-        sendToChatParticipants(events.sendUpImg, image);
+        sendMessageTo(toWizard, events.sendUpImg, image);
     });
 
     socket.on(events.GMQLreq, (options) => {
         ls.infoSync("GMQL request incoming", options);
         httpAPI.httpRequest('http://geco.deib.polimi.it', options).then(response => {
-            sendToChatParticipants(events.HTTPres, response)
+            sendMessageTo(toWizard, events.HTTPres, response)
         });
+    })
+
+    socket.on(events.tabClose, (details) => {
+        ls.infoSync("User closed tab \"" + details.tab + "\"");
+        sendMessageTo(toWizard, events.tabClose, details)
+    })
+
+    socket.on(events.tabSwitch, (details) => {
+        ls.infoSync("User changed view to tab \"" + details.tab + "\"");
+        sendMessageTo(toWizard, events.tabSwitch, details)
     })
 }
 

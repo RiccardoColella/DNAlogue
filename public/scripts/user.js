@@ -113,6 +113,14 @@ Vue.component('tabs', {
     },
     methods: {
         closeTab: function (index) {    
+
+            var closeObject = {
+                tab: this.tabs[index].title,
+                index: index
+            }
+
+            socket.emit("tabClose", closeObject);
+
             this.tabs.splice(index, 1);
 
             if (this.selectedTab > (this.tabs.length - 1))

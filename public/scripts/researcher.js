@@ -255,5 +255,6 @@ socket.on('wizard message', function (msg) {
     eventBus.$emit('wizardMessageReceived', msg)
 });
 
-
-{/*  */}
+socket.on('Update image', function (tab) {
+    eventBus.$emit('newImageToShow', tab)
+}); // we can receive it??

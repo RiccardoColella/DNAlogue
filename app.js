@@ -63,6 +63,7 @@ http.listen(port, function(info){
         throw new Error("Unexpected error while trying to log in http.listen callback...\n" + info);
     });
 });
+
 /*
 setTimeout(() => {
     db.getTasks().then( (res) => {

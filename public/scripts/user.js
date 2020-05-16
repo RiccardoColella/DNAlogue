@@ -12,7 +12,8 @@ Vue.component('chat', {
         <div class="child-chat child-container">
             <ul class="message-list" ref="messageList">
                 <li class="single-message-item" 
-                    v-bind:class="{'my-message-item': message.isMy, 'foreigner-message-item': message.isForeigner}" 
+                    v-bind:class="{'my-message-item': message.isMy, 
+                                   'foreigner-message-item': message.isForeigner}" 
                     v-for="(message, index) in messages" 
                     :key="index">
                     {{ message.text }}
@@ -67,13 +68,15 @@ Vue.component('tabs', {
                     :key="index"
                     @click="selectedTab = index">
                     {{ tabs[index].title }}
-                    <span class="fa fa-close close-button" @click.stop="closeTab(index)"></span>
+                    <span class="fa fa-close close-button" @click.stop="closeTab(index)">
+                    </span>
                 </li>
                 
             </ul>
             <div class="tab-content" v-if="tabs.length !== 0">
                 <img v-if="tabs[selectedTab].isImage" :src="tabs[selectedTab].src" alt="">
-                <div v-if="tabs[selectedTab].isHTML" v-html="tabs[selectedTab].htmlContent"></div>
+                <div v-if="tabs[selectedTab].isHTML" v-html="tabs[selectedTab].htmlContent">
+                </div>
             </div>
         </div>    
     `,
@@ -122,7 +125,7 @@ Vue.component('tabs', {
         eventBus.$on('newImageToShow', function (tab) {
             self.tabs.push(tab);
             self.selectedTab = self.tabs.length - 1;
-            console.log(image + " received from wizard");
+            console.log(tab + " received from wizard");
         })
     }
         

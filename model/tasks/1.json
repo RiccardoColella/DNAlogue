@@ -3,9 +3,34 @@
 	"Number": 1,
 	"Description": "This is a general task",
 	"Images": [
-        "images/genomic_1.jpg",
-        "images/genomic_2.png"
+        {
+            "path": "images/genomic_1.jpg",
+            "description": "Immagine 1"
+        },
+        {
+            "path": "images/genomic_2.png",
+            "description": "Immagine 2"
+        }
     ],
     "PrecompiledTexts": ["Precompiled text A", "Precompiled text B"],
-    "PresavedAPIRequests": []
+    "PresavedAPIRequests": [
+        {
+            "method": "GET",
+            "url": "/prova/{id1}/{id2}",
+            "params": ["id1","id2"],
+            "actualParams": [],
+            "hasBody": false,
+            "script": "",
+            "description": "Descrizione API n° 1"
+        },
+        {
+            "method": "POST",
+            "url": "/prova/{id1}",
+            "params": ["id1"],
+            "actualParams": [],
+            "hasBody": true,
+            "script": "",
+            "description": "Descrizione API n° 2"
+        }
+    ]
 }

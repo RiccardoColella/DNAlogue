@@ -194,7 +194,13 @@ border-right: none; /* remove bordr introduced by tab-selector class*/
     margin-right: 25%; */
     margin-top: .5em;
 }
-
+.task-content input[name=callBody] {
+    text-align: center;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: .5em;
+}
 
 .task-content input[name=callParam] {
     text-align: center;
@@ -255,7 +261,14 @@ border-right: none; /* remove bordr introduced by tab-selector class*/
 }
 
 .new-APICall textarea[name=API-script] {
-    width: 90%;
+    width: 50%;
+    padding: .5em;
+    margin-top: 1em;
+    resize: vertical;
+}
+
+.new-APICall textarea[name=API-body] {
+    width: 40%;
     padding: .5em;
     margin-top: 1em;
     resize: vertical;

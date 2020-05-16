@@ -3,7 +3,10 @@
 	"Number": 2,
 	"Description": "This is a general task",
 	"Images": [
-        "images/genomic_3.png"
+        {
+            "path": "images/genomic_3.png",
+            "description": "Immagine A"
+        }
     ],
     "PrecompiledTexts": ["Precompiled text A", "Precompiled text B", "Precompiled text C"],
     "PresavedAPIRequests": []

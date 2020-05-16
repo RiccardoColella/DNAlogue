@@ -10,44 +10,10 @@
 <body>
     <div id="main-app" class="main-container">
         <div class="child-title child-container"><h2>Wizard Side</h2></div>
-        <chat></chat>
-        <div class="child-tasks child-container">
-            <ul class="tasks-selector tab-selector">
-                <li class="selected">Task 1</li>
-                <li>Task 2</li>
-                <li>Task 2</li>
-                <li>Task 2</li>
-                <li>Task 2</li>
-                <li>Task 2</li>
 
-            </ul>
-            
-            <form class="tasks-newtask">
-                <input type="text" autocomplete="off">
-                <button class="new-task-button">New Task</button>
-                <button class="remove-task-button">Remove current Task</button>
-            </form>
-            
-            <ul class="task-content tab-selector">
-                <li>Risposta Precompilata<span class="fa fa-close close-button"></span></li>
-                <li>Risposta precompilata<span class="fa fa-close close-button"></span></li>
-                <li><img src="./images/genomic_3.png" alt=""><span class="image-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</span><span class="fa fa-close close-button"></span></li>
-                <li>
-                    <form action="">
-                        <button name="callButton">Invio</button>
-                        <input type="text" name="callMethod" value="DELETE" disabled>
-                        <input type="text" name="callUrl" value="/url/{id}" readonly>
-                        <span class="API-description">At vero eos et accusamus et iusto odio {dignissimos} ducimus {qui} blanditiis</span>
-                        <input type="text" name="callParam" placeholder="id">
-                        <input type="text" name="callParam" placeholder="id">
-                    </form>
-                    <span class="fa fa-close close-button"></span>
-                </li>
-                <li>Tab 3</li>
-                <li>Tab 2</li>
-            </ul>
-            
-        </div>
+        <chat></chat>
+        <tasks></tasks>
+
         <div class="child-tabs child-container">
             <ul class="tab-selector">
                 <li class="selected">Tab 1 aaaaa aaaaaa aaaaaa aaaaaa aaaaaa aaaaaa</li>
@@ -111,6 +77,8 @@
                   </select>
                 <input type="text" name="API-url" placeholder="URL here...">
                 <input type="text" name="API-Name" placeholder="Name here (it's possible to use parameters with {param name})">
+                <label for="checkBody">Require Body:</label>
+                <input type="checkbox" id="checkBody" name="API-body" value="true"></input>
                 <textarea name="API-script" rows="5" placeholder="Scipt here..."></textarea>
             </form>
         </div>

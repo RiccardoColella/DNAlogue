@@ -47,7 +47,37 @@
             "actualParams": [],
             "hasBody": false,
             "script": "",
-            "description": "List of all fields"
+            "description": "List of all fields",
+            "actualBody": ""
+        },
+        {
+            "method": "GET",
+            "url": "/genosurf/api/field",
+            "params": [],
+            "actualParams": [],
+            "hasBody": false,
+            "script": "output = '<div style=\"color: red;\">' + response + \"</div>\";",
+            "description": "prova 2",
+            "actualBody": ""
+        },
+        {
+            "method": "GET",
+            "url": "/genosurf/api/field",
+            "params": [],
+            "actualParams": [],
+            "hasBody": false,
+            "script": "output = '<div style=\"color: red;\">' + response + \"</div>\";'",
+            "description": "prova 3",
+            "actualBody": ""
+        },
+        {
+            "method": "GET",
+            "url": "/genosurf/api/field",
+            "params": [],
+            "actualParams": [],
+            "hasBody": false,
+            "script": "output = '<div style=\"color: red;\">' + response + '</div>';",
+            "description": "dwwddwdwd"
         }
     ]
 }

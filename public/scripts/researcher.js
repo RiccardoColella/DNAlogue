@@ -336,6 +336,12 @@ Vue.component('tabs', {
 
             if (this.selectedTab > (this.tabs.length - 1))
                 this.selectedTab = this.selectedTab - 1;
+        },
+        evalResponse: function (resp, script) {
+            var response = resp;
+            var output = "";
+            eval(script);
+            return output;
         }
     },
     mounted() {
@@ -353,6 +359,19 @@ Vue.component('tabs', {
 
         eventBus.$on('tabSwitch', function (tab) {
             self.selectedTab = tab.index;
+        });
+
+        eventBus.$on('newAPIToShow', function (api) {
+            var newAPITab = api;
+            var finalHTML = newAPITab.htmlContent;
+            if (newAPITab.script)
+                finalHTML = self.evalResponse(newAPITab.htmlContent, newAPITab.script);
+            newAPITab.htmlContent = finalHTML;
+            delete newAPITab.script;
+
+            self.tabs.push(newAPITab);
+            self.selectedTab = self.tabs.length - 1;
+            console.log(newAPITab + " received from wizard");
         });
     }
         
@@ -382,7 +401,7 @@ Vue.component('task-manager', {
                 <input v-model="selectedAPIName" type="text" name="API-Name" placeholder="Name here (it's possible to use parameters with {param name})">
                 <label for="checkBody">Require Body:</label>
                 <input v-model="selectedAPIHasBody" type="checkbox" id="checkBody" name="API-body" true-value="yes" false-value="no"></input>
-                <textarea v-model="selectedAPIScript" name="API-script" rows="5" placeholder="Scipt here..."></textarea>
+                <textarea v-model="selectedAPIScript" name="API-script" rows="5" placeholder="Scipt here... \n'response' is the output of the API call\n'output' is where to put formatted HTML"></textarea>
             </form>
         </div>        
     `,
@@ -526,5 +545,5 @@ socket.on('tabClose', function (tab) {
 socket.on('Send API results', function (api) {
     console.log("'Send API results' received")
     console.log(JSON.stringify(api))
-    eventBus.$emit('newAPIToShow', tab)
+    eventBus.$emit('newAPIToShow', api)
 });

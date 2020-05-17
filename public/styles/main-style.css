@@ -131,10 +131,11 @@ body {
     height: 100%;
     width: 30%;
     border: none;
+    background-color: #96DDFF;
 }
 
 .new-message-form button:hover {
-    background-color: rgb(202, 202, 202);
+    background-color: #01BFFF;
 }
 
 /*  TABS -----------------------------------------------------------------------*/

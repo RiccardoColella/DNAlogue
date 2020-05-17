@@ -10,7 +10,7 @@ var eventBus = new Vue();
 Vue.component('chat', {
     template: `
         <div class="child-chat child-container">
-            <ul class="message-list" ref="messageList">
+            <ul v-show="!loginPhase" class="message-list" ref="messageList">
                 <li class="single-message-item" 
                     v-bind:class="{'my-message-item': message.isMy, 
                                    'foreigner-message-item': message.isForeigner}" 
@@ -19,14 +19,28 @@ Vue.component('chat', {
                     {{ message.text }}
                 </li>
             </ul>
-            <form @submit.prevent="onSubmit" class="new-message-form">
+            <form v-show="!loginPhase" @submit.prevent="onSubmit" class="new-message-form">
                 <input type="text" v-model="currentMessage" autocomplete="off" autofocus>
                 <button>Send</button>
+            </form>
+            <form @submit.prevent="sendLogin" v-if="loginPhase" id="loginForm">
+                
+                <input type="text" v-model="loginFirst" name="firstname" placeholder="Firstname" autofocus>
+                <input type="text" v-model="loginLast" name="lastname" placeholder="Lastname">
+                <input type="text" v-model="loginCompany" name="company" placeholder="Your Company">
+                <input type="text" v-model="loginRole" name="role" placeholder="Your Role">
+                <button>Login</button>
             </form>
         </div>
     `,
     data: function () {
         return {
+            loginPhase: true,
+            loginFirst: "",
+            loginLast: "",
+            loginCompany: "",
+            loginRole: "",
+
             currentMessage: null,
             messages: []
         }
@@ -37,6 +51,16 @@ Vue.component('chat', {
                 socket.emit('chat message', this.currentMessage);
                 this.currentMessage = null;
             }
+        },
+        sendLogin: function () {
+            var tempLogin = {
+                firstName: this.loginFirst,
+                lastName: this.loginLast,
+                company: this.loginCompany,
+                role: this.loginRole,
+            }
+            socket.emit('Login', tempLogin);
+            this.loginPhase = false;
         }
     },
     mounted() {
@@ -134,6 +158,12 @@ Vue.component('tabs', {
                 index: index
             }
             socket.emit("tabSwitch", tempTab);
+        },
+        evalResponse: function (resp, script) {
+            var response = resp;
+            var output = "";
+            eval(script);
+            return output;
         }
     },
     mounted() {
@@ -143,7 +173,20 @@ Vue.component('tabs', {
             self.tabs.push(tab);
             self.selectedTab = self.tabs.length - 1;
             console.log(tab + " received from wizard");
-        })
+        });
+
+        eventBus.$on('newAPIToShow', function (api) {
+            var newAPITab = api;
+            var finalHTML = newAPITab.htmlContent;
+            if (newAPITab.script)
+                finalHTML = self.evalResponse(newAPITab.htmlContent, newAPITab.script);
+            newAPITab.htmlContent = finalHTML;
+            delete newAPITab.script;
+
+            self.tabs.push(newAPITab);
+            self.selectedTab = self.tabs.length - 1;
+            console.log(newAPITab + " received from wizard");
+        });
     }
         
 });
@@ -181,5 +224,9 @@ socket.on('Update image', function (tab) {
 socket.on('Send API results', function (api) {
     console.log("'Send API results' received")
     console.log(JSON.stringify(api))
-    eventBus.$emit('newAPIToShow', tab)
+    eventBus.$emit('newAPIToShow', api)
+});
+
+socket.on('Login', function (api) {
+    console.log("'Login' received")
 });

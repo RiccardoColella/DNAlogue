@@ -43,3 +43,35 @@ body {
 .tab-selector .selected {
     background-color: #f1e3dd;
 }
+
+/*  LOGIN -----------------------------------------------------------------------*/
+
+#loginForm {
+
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#loginForm > input {
+    border: hidden thin black;
+    border-radius: 0.5em;
+    padding-left: 0.5em;
+    margin-top: 2em;
+    width: 70%;
+    height: 2.5em;
+}
+
+#loginForm > button {
+    border: solid thin black;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    font-size: 1em;
+    margin-top: 2.5em;
+}

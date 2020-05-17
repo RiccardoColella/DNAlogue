@@ -65,7 +65,7 @@ function onChatConnection(socket){
 
     socket.on(events.imgPush, (image) => {
         ls.infoSync("Received 'push img' event for image at: " + image);
-        sendMessageTo(toWizard, events.sendUpImg, image);
+        sendMessageTo(chatParticipants, events.sendUpImg, image);
     });
 
     socket.on(events.GMQLreq, (options) => {

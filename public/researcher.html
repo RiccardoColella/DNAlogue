@@ -13,75 +13,9 @@
 
         <chat></chat>
         <tasks></tasks>
-
-        <div class="child-tabs child-container">
-            <ul class="tab-selector">
-                <li class="selected">Tab 1 aaaaa aaaaaa aaaaaa aaaaaa aaaaaa aaaaaa</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-                <li>Tab 1</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-                <li>Tab 1</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-                <li>Tab 1</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-                <li>Tab 1</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-                <li>Tab 1</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-                <li>Tab 1</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-                <li>Tab 1</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-                <li>Tab 1</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-                <li>Tab 1</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-                <li>Tab 1</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-                <li>Tab 1</li>
-                <li>Tab 2</li>
-                <li>Tab 3</li>
-            </ul>
-            <div class="tab-content">
-                <img src="./images/genomic_1.jpg" alt="">
-            </div>
-        </div>
-        <div class="child-task-manager child-container">
-            <form class="new-precompiled" action="">
-                <input type="text" name="precompiled" placeholder="precompiled message">
-                <button name="precompiled-button">ADD</button>
-            </form>
-            <form class="new-image" action="">
-                <input type="file" name="image-choose">
-                <input type="text" name="image-description" placeholder="Description here...">
-                <input type="submit" name="image-button">
-            </form>
-            <form class="new-APICall" action="">
-                <button name="API-button">ADD</button>
-                <select name="api-method">
-                    <option value="get">GET</option>
-                    <option value="post">POST</option>
-                    <option value="put">PUT</option>
-                    <option value="delete">DELETE</option>
-                  </select>
-                <input type="text" name="API-url" placeholder="URL here...">
-                <input type="text" name="API-Name" placeholder="Name here (it's possible to use parameters with {param name})">
-                <label for="checkBody">Require Body:</label>
-                <input type="checkbox" id="checkBody" name="API-body" value="true"></input>
-                <textarea name="API-script" rows="5" placeholder="Scipt here..."></textarea>
-            </form>
-        </div>
+        <tabs></tabs>
+        <task-manager></task-manager>
+        
     </div>
 
     <!-- Scripts under this comment -->

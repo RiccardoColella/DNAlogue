@@ -7,6 +7,7 @@ let userSocket;
 let wizardSocket;
 let chat;
 let wizardRE = /.*\/wizard.*/;
+let result;
 const chatParticipants = 'chat participants';
 const toWizard = 'Wizard chat'
 const events = {
@@ -14,19 +15,18 @@ const events = {
     wizMsg: 'wizard message',
     usrMsg: 'user message',
     imgPush: 'Push img',
+    login: 'Login',
     sendUpImg: 'Update image',
     GMQLreq: 'GMQL http request',
-    HTTPres: 'Send to wizard results',
+    HTTPres: 'Send API results',
     tabClose: "tabClose",
     tabSwitch: "tabSwitch"
-
 }
 
 function startIO(http) {
     io = require("socket.io")(http);
     chat = io.of('/chat');
     chat.on('connection', onChatConnection);
-    //TODO implement registration/login event for the user
     //TODO implement the StartSession event from the wizard
 }
 
@@ -42,6 +42,11 @@ function onChatConnection(socket){
     }
     socket.join(chatParticipants);
     ls.logSync('debug', "Joining " + socket + " at chatParticipants room")
+
+    socket.on(events.login, (info) => {
+        ls.infoSync("New login received", info)
+    })
+
     socket.on(events.chatMsg, (msg) => {
         let eventName;
         let message;
@@ -65,13 +70,26 @@ function onChatConnection(socket){
 
     socket.on(events.imgPush, (image) => {
         ls.infoSync("Received 'push img' event for image at: " + image);
-        sendMessageTo(chatParticipants, events.sendUpImg, image);
+        sendToChatParticipants(events.sendUpImg, image);
     });
 
     socket.on(events.GMQLreq, (options) => {
+        result = {};
+        try {
+            result.title = options.description;
+            result.script = options.script;
+            delete options.description;
+            delete options.script;
+        } catch (e) {
+            ls.errorSync("Riceived options in API request event not compliant to the specifications", options)
+        }
+        result.isImage = false;
+        result.isHTML = true;
+
         ls.infoSync("GMQL request incoming", options);
         httpAPI.httpRequest('http://geco.deib.polimi.it', options).then(response => {
-            sendMessageTo(toWizard, events.HTTPres, response)
+            result.htmlContent = response;
+            sendToChatParticipants(events.HTTPres, result);
         });
     })
 

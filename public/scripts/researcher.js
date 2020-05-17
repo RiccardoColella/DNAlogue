@@ -331,8 +331,8 @@ Vue.component('task-manager', {
                 <input type="text" v-model="precompiledFormTemp" name="precompiled" placeholder="precompiled message">
                 <button name="precompiled-button">ADD</button>
             </form>
-            <form class="new-image" action="">
-                <input type="file" name="image-choose">
+            <form @submit.prevent="newImage" class="new-image" action="">
+                <input type="file" ref="file" name="image-choose" accept="image/*" v-on:change="handleFileUpload()">
                 <input type="text" name="image-description" placeholder="Description here...">
                 <input type="submit" name="image-button">
             </form>
@@ -354,13 +354,43 @@ Vue.component('task-manager', {
     `,
     data: function () {
         return {
-            precompiledFormTemp: ""
+            precompiledFormTemp: "",
+
+            imageDescription: "",
+            file: ""
         }
     },
     methods: {
         newPrecompiled: function () {
             eventBus.$emit('newPrecompiled', this.precompiledFormTemp);
             this.precompiledFormTemp = "";
+        },
+        newImage: function () {
+
+            let formData = new FormData();
+
+            formData.append('image', this.file);
+
+            console.log(formData.file2);
+            /*
+              Make the request to the POST /single-file URL
+            */
+            axios.post('/upload', formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(function () {
+                    console.log('SUCCESS!!');
+                });
+
+
+
+            // eventBus.$emit('newPrecompiled', this.precompiledFormTemp);
+            // this.precompiledFormTemp = "";
+        },
+        handleFileUpload: function () {
+            this.file = this.$refs.file.files[0];
         }
     },
     mounted() {

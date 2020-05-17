@@ -1,8 +1,8 @@
 {
     "Title": "Task1",
-	"Number": 1,
-	"Description": "This is a general task",
-	"Images": [
+    "Number": 1,
+    "Description": "This is a general task",
+    "Images": [
         {
             "path": "images/genomic_1.jpg",
             "description": "Immagine 1"
@@ -12,12 +12,19 @@
             "description": "Immagine 2"
         }
     ],
-    "PrecompiledTexts": ["Precompiled text A", "Precompiled text B"],
+    "PrecompiledTexts": [
+        "Precompiled text A",
+        "Precompiled text B",
+        "Prova2"
+    ],
     "PresavedAPIRequests": [
         {
             "method": "GET",
             "url": "/prova/{id1}/{id2}",
-            "params": ["id1","id2"],
+            "params": [
+                "id1",
+                "id2"
+            ],
             "actualParams": [],
             "hasBody": false,
             "script": "",
@@ -26,7 +33,9 @@
         {
             "method": "POST",
             "url": "/prova/{id1}",
-            "params": ["id1"],
+            "params": [
+                "id1"
+            ],
             "actualParams": [],
             "hasBody": true,
             "script": "",

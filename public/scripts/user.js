@@ -66,7 +66,7 @@ Vue.component('tabs', {
                 <li :class="{ selected: selectedTab == index }"
                     v-for="(tab, index) in tabs" 
                     :key="index"
-                    @click="selectedTab = index">
+                    @click="switchTab(tab,index)">
                     {{ tabs[index].title }}
                     <span class="fa fa-close close-button" @click.stop="closeTab(index)">
                     </span>
@@ -125,6 +125,15 @@ Vue.component('tabs', {
 
             if (this.selectedTab > (this.tabs.length - 1))
                 this.selectedTab = this.selectedTab - 1;
+        },
+        switchTab: function (tab,index) {
+            this.selectedTab = index;
+
+            var tempTab = {
+                tab: tab.title,
+                index: index
+            }
+            socket.emit("tabSwitch", tempTab);
         }
     },
     mounted() {
@@ -138,6 +147,8 @@ Vue.component('tabs', {
     }
         
 });
+
+
 
 // --------------------------------- MAIN APP ------------------------------------
 

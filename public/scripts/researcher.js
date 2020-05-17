@@ -198,6 +198,14 @@ Vue.component('tasks', {
 
             this.newTaskName = "";
         },
+        updateTask: function (updatedTask) {
+
+
+            axios
+                .post('/tasks/' + updatedTask.Number, updatedTask)
+                .then(response => (self.updateTaskList()));
+
+        },
         deleteTask: function () {
             var self= this;
 
@@ -225,10 +233,140 @@ Vue.component('tasks', {
         }
     },
     mounted() {
+        var self = this;
 
         this.updateTaskList();
 
+        eventBus.$on('newPrecompiled', function (precompiled) {
+            var updated = self.tasks[self.selectedTask];
+            updated.PrecompiledTexts.push(precompiled);
+            self.updateTask(updated);
+        });
     }
+});
+
+Vue.component('tabs', {
+    template: `
+        <div class="child-tabs child-container">
+            <ul class="tab-selector">
+
+                <li :class="{ selected: selectedTab == index }"
+                    v-for="(tab, index) in tabs" 
+                    :key="index">
+                    {{ tabs[index].title }}
+                    
+                </li>
+                
+            </ul>
+            <div class="tab-content" v-if="tabs.length !== 0">
+                <img v-if="tabs[selectedTab].isImage" :src="tabs[selectedTab].src" alt="">
+                <div v-if="tabs[selectedTab].isHTML" v-html="tabs[selectedTab].htmlContent">
+                </div>
+            </div>
+        </div>    
+    `,
+    data: function () {
+        return {
+            tabs: [
+            {
+                title: "TIMG 1 di prova",
+                isImage: true,
+                isHTML: false,
+                src: "./images/genomic_1.jpg"
+            },
+            {
+                title: "API Call result di prova",
+                isImage: false,
+                isHTML: true,
+                htmlContent: "<p style='color: brown;'>Paragrafo di prova</p>"
+            },
+            {
+                title: "IMG 2 di prova",
+                isImage: true,
+                isHTML: false,
+                src: "./images/genomic_2.png"
+            },
+            {
+                title: "IMG 3 di prova",
+                isImage: true,
+                isHTML: false,
+                src: "./images/genomic_3.png"
+            }
+            ],
+            selectedTab : 0
+        }
+    },
+    methods: {
+        closeTab: function (index) {    
+
+            var closeObject = {
+                tab: this.tabs[index].title,
+                index: index
+            }
+
+            socket.emit("tabClose", closeObject);
+
+            this.tabs.splice(index, 1);
+
+            if (this.selectedTab > (this.tabs.length - 1))
+                this.selectedTab = this.selectedTab - 1;
+        }
+    },
+    mounted() {
+        var self = this;
+
+        eventBus.$on('newImageToShow', function (tab) {
+            self.tabs.push(tab);
+            self.selectedTab = self.tabs.length - 1;
+            console.log(tab + " received from wizard");
+        })
+    }
+        
+});
+
+Vue.component('task-manager', {
+    template: `
+        <div class="child-task-manager child-container">
+            <form @submit.prevent="newPrecompiled" class="new-precompiled" action="">
+                <input type="text" v-model="precompiledFormTemp" name="precompiled" placeholder="precompiled message">
+                <button name="precompiled-button">ADD</button>
+            </form>
+            <form class="new-image" action="">
+                <input type="file" name="image-choose">
+                <input type="text" name="image-description" placeholder="Description here...">
+                <input type="submit" name="image-button">
+            </form>
+            <form class="new-APICall" action="">
+                <button name="API-button">ADD</button>
+                <select name="api-method">
+                    <option value="get">GET</option>
+                    <option value="post">POST</option>
+                    <option value="put">PUT</option>
+                    <option value="delete">DELETE</option>
+                  </select>
+                <input type="text" name="API-url" placeholder="URL here...">
+                <input type="text" name="API-Name" placeholder="Name here (it's possible to use parameters with {param name})">
+                <label for="checkBody">Require Body:</label>
+                <input type="checkbox" id="checkBody" name="API-body" value="true"></input>
+                <textarea name="API-script" rows="5" placeholder="Scipt here..."></textarea>
+            </form>
+        </div>        
+    `,
+    data: function () {
+        return {
+            precompiledFormTemp: ""
+        }
+    },
+    methods: {
+        newPrecompiled: function () {
+            eventBus.$emit('newPrecompiled', this.precompiledFormTemp);
+            this.precompiledFormTemp = "";
+        }
+    },
+    mounted() {
+        
+    }
+        
 });
 
 // --------------------------------- MAIN APP ------------------------------------
@@ -257,4 +395,14 @@ socket.on('wizard message', function (msg) {
 
 socket.on('Update image', function (tab) {
     eventBus.$emit('newImageToShow', tab)
+}); // we can receive it??
+
+socket.on('tabSwitch', function (tab) {
+    eventBus.$emit('tabSwitch', tab)
+    console.log("aaaaaaaaa");
+}); // we can receive it??
+
+socket.on('tabClose', function (tab) {
+    eventBus.$emit('tabSwitch', tab)
+    console.log("bbbbbbbbb");
 }); // we can receive it??

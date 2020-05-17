@@ -177,3 +177,9 @@ socket.on('wizard message', function (msg) {
 socket.on('Update image', function (tab) {
     eventBus.$emit('newImageToShow', tab)
 });
+
+socket.on('Send API results', function (api) {
+    console.log("'Send API results' received")
+    console.log(JSON.stringify(api))
+    eventBus.$emit('newAPIToShow', tab)
+});

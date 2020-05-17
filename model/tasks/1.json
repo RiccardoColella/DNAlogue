@@ -14,8 +14,7 @@
     ],
     "PrecompiledTexts": [
         "Precompiled text A",
-        "Precompiled text B",
-        "Prova2"
+        "Precompiled text B"
     ],
     "PresavedAPIRequests": [
         {
@@ -40,6 +39,15 @@
             "hasBody": true,
             "script": "",
             "description": "Descrizione API n° 2"
+        },
+        {
+            "method": "GET",
+            "url": "/genosurf/api/field",
+            "params": [],
+            "actualParams": [],
+            "hasBody": false,
+            "script": "",
+            "description": "List of all fields"
         }
     ]
 }

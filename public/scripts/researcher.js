@@ -97,7 +97,8 @@ Vue.component('tasks', {
                     <span class="image-description">
                         {{image.description}}
                     </span>
-                    <span class="fa fa-close close-button"></span>
+                    <span   class="fa fa-close close-button"
+                            @click.stop="removeI(indexI)"></span>
                 </li>
 
                 <li v-for="(api, indexA) in tasks[selectedTask].PresavedAPIRequests"
@@ -113,7 +114,8 @@ Vue.component('tasks', {
                                 type="text" name="callParam" :placeholder="param"
                                 v-model = "api.actualParams[indexAP]">
                     </form>
-                    <span class="fa fa-close close-button"></span>
+                    <span   class="fa fa-close close-button"
+                            @click.stop="removeA(indexA)"></span>
                 </li>
 
             </ul>
@@ -163,7 +165,7 @@ Vue.component('tasks', {
             if (api.hasBody === true) {
                 tempApi.body = api.actualBody;
             }
-
+            console.log(JSON.stringify(tempApi))
             socket.emit('GMQL http request', tempApi);
             console.log(tempApi.path + " pushed to server");
 
@@ -177,7 +179,19 @@ Vue.component('tasks', {
 
         },
         removeP: function (index) {
-
+            var updated = this.tasks[this.selectedTask];
+            updated.PrecompiledTexts.splice(index, 1);
+            this.updateTask(updated);
+        },
+        removeI: function (index) {
+            var updated = this.tasks[this.selectedTask];
+            updated.Images.splice(index, 1);
+            this.updateTask(updated);
+        },
+        removeA: function (index) {
+            var updated = this.tasks[this.selectedTask];
+            updated.PresavedAPIRequests.splice(index, 1);
+            this.updateTask(updated);
         },
         newTask: function () {
 
@@ -199,7 +213,7 @@ Vue.component('tasks', {
             this.newTaskName = "";
         },
         updateTask: function (updatedTask) {
-
+            var self= this;
 
             axios
                 .post('/tasks/' + updatedTask.Number, updatedTask)
@@ -240,6 +254,18 @@ Vue.component('tasks', {
         eventBus.$on('newPrecompiled', function (precompiled) {
             var updated = self.tasks[self.selectedTask];
             updated.PrecompiledTexts.push(precompiled);
+            self.updateTask(updated);
+        });
+
+        eventBus.$on('newImageUploaded', function (imageObj) {
+            var updated = self.tasks[self.selectedTask];
+            updated.Images.push(imageObj);
+            self.updateTask(updated);
+        });
+
+        eventBus.$on('newAPICall', function (api) {
+            var updated = self.tasks[self.selectedTask];
+            updated.PresavedAPIRequests.push(api);
             self.updateTask(updated);
         });
     }
@@ -319,7 +345,19 @@ Vue.component('tabs', {
             self.tabs.push(tab);
             self.selectedTab = self.tabs.length - 1;
             console.log(tab + " received from wizard");
-        })
+        });
+
+        eventBus.$on('tabClose', function (tab) {
+            // self.tabs.push(tab);
+            // self.selectedTab = self.tabs.length - 1;
+            // console.log(tab + " received from wizard");
+        });
+
+        eventBus.$on('tabSwitch', function (tab) {
+            // self.tabs.push(tab);
+            // self.selectedTab = self.tabs.length - 1;
+            // console.log(tab + " received from wizard");
+        });
     }
         
 });
@@ -333,22 +371,22 @@ Vue.component('task-manager', {
             </form>
             <form @submit.prevent="newImage" class="new-image" action="">
                 <input type="file" ref="file" name="image-choose" accept="image/*" v-on:change="handleFileUpload()">
-                <input type="text" name="image-description" placeholder="Description here...">
+                <input type="text" v-model="imageDescription" name="image-description" placeholder="Description here...">
                 <input type="submit" name="image-button">
             </form>
-            <form class="new-APICall" action="">
+            <form @submit.prevent="newAPI" class="new-APICall" action="">
                 <button name="API-button">ADD</button>
-                <select name="api-method">
-                    <option value="get">GET</option>
-                    <option value="post">POST</option>
-                    <option value="put">PUT</option>
-                    <option value="delete">DELETE</option>
+                <select v-model="selectedAPIMethod" name="api-method">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
                   </select>
-                <input type="text" name="API-url" placeholder="URL here...">
-                <input type="text" name="API-Name" placeholder="Name here (it's possible to use parameters with {param name})">
+                <input v-model="selectedAPIUrl" type="text" name="API-url" placeholder="URL here...">
+                <input v-model="selectedAPIName" type="text" name="API-Name" placeholder="Name here (it's possible to use parameters with {param name})">
                 <label for="checkBody">Require Body:</label>
-                <input type="checkbox" id="checkBody" name="API-body" value="true"></input>
-                <textarea name="API-script" rows="5" placeholder="Scipt here..."></textarea>
+                <input v-model="selectedAPIHasBody" type="checkbox" id="checkBody" name="API-body" true-value="yes" false-value="no"></input>
+                <textarea v-model="selectedAPIScript" name="API-script" rows="5" placeholder="Scipt here..."></textarea>
             </form>
         </div>        
     `,
@@ -357,37 +395,89 @@ Vue.component('task-manager', {
             precompiledFormTemp: "",
 
             imageDescription: "",
-            file: ""
+            file: "",
+
+            selectedAPIMethod: "",
+            selectedAPIUrl: "",
+            selectedAPIName: "",
+            selectedAPIHasBody: "",
+            selectedAPIScript: ""
         }
     },
     methods: {
         newPrecompiled: function () {
+            if (this.precompiledFormTemp == "")
+                return;
             eventBus.$emit('newPrecompiled', this.precompiledFormTemp);
             this.precompiledFormTemp = "";
         },
         newImage: function () {
 
+            var self = this;
+
+            if(this.file == "" || this.imageDescription == "")
+                return;
+
+            var tempImage = {
+                path: "uploads/" + this.file.name,
+                description: this.imageDescription
+            }
+
             let formData = new FormData();
 
             formData.append('image', this.file);
 
-            console.log(formData.file2);
-            /*
-              Make the request to the POST /single-file URL
-            */
             axios.post('/upload', formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 }).then(function () {
-                    console.log('SUCCESS!!');
+                    console.log("Success");
+                    console.log(tempImage);
+                    if(tempImage != null)
+                        eventBus.$emit('newImageUploaded', tempImage);
+                    self.imageDescription = "";
+                    self.file = "";
+                    self.$refs.file.value = "";
                 });
 
+        },
+        newAPI: function () {
 
+            var self = this;
 
-            // eventBus.$emit('newPrecompiled', this.precompiledFormTemp);
-            // this.precompiledFormTemp = "";
+            if(this.selectedAPIMethod == "" || this.selectedAPIUrl == "" || this.selectedAPIName == "")
+                return;
+
+            var hasBody = false;
+            if(this.selectedAPIHasBody === "yes")
+                hasBody = true;
+            
+            var matches = this.selectedAPIUrl.match(/[^{\}]+(?=})/g);
+
+            console.log("Found params: " + matches)
+            if (!matches) {
+                matches = [];
+            }
+
+            var tempAPI = {
+                "method": this.selectedAPIMethod,
+                "url": this.selectedAPIUrl,
+                "params": matches,
+                "actualParams": [],
+                "hasBody": hasBody,
+                "script": this.selectedAPIScript,
+                "description": this.selectedAPIName
+            }
+
+            eventBus.$emit('newAPICall', tempAPI);
+            this.selectedAPIMethod = "";
+            this.selectedAPIUrl = "";
+            this.selectedAPIName = "";
+            this.selectedAPIHasBody = "";
+            this.selectedAPIScript = "";
+
         },
         handleFileUpload: function () {
             this.file = this.$refs.file.files[0];
@@ -425,14 +515,20 @@ socket.on('wizard message', function (msg) {
 
 socket.on('Update image', function (tab) {
     eventBus.$emit('newImageToShow', tab)
-}); // we can receive it??
+});
 
 socket.on('tabSwitch', function (tab) {
     eventBus.$emit('tabSwitch', tab)
-    console.log("aaaaaaaaa");
-}); // we can receive it??
+    console.log("tab cambiato");
+});
 
 socket.on('tabClose', function (tab) {
-    eventBus.$emit('tabSwitch', tab)
-    console.log("bbbbbbbbb");
-}); // we can receive it??
+    eventBus.$emit('tabClose', tab)
+    console.log("tab chiuso");
+});
+
+socket.on('Send API results', function (api) {
+    console.log("'Send API results' received")
+    console.log(JSON.stringify(api))
+    eventBus.$emit('newAPIToShow', tab)
+});

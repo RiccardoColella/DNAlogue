@@ -45,6 +45,7 @@ function onChatConnection(socket){
 
     socket.on(events.login, (info) => {
         ls.infoSync("New login received", info)
+        sendMessageTo(toWizard, events.login, info);
     })
 
     socket.on(events.chatMsg, (msg) => {

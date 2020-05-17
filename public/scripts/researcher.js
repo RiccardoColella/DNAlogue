@@ -547,3 +547,10 @@ socket.on('Send API results', function (api) {
     console.log(JSON.stringify(api))
     eventBus.$emit('newAPIToShow', api)
 });
+
+socket.on('Login', function (login) {
+    console.log("'Login' received")
+
+    var text = "Welcome " + login.firstName + "! Use this chat to interact with the GenoSurf chatbot.";
+    socket.emit('chat message', text);
+});

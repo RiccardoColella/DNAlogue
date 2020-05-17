@@ -226,7 +226,3 @@ socket.on('Send API results', function (api) {
     console.log(JSON.stringify(api))
     eventBus.$emit('newAPIToShow', api)
 });
-
-socket.on('Login', function (api) {
-    console.log("'Login' received")
-});

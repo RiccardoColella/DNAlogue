@@ -106,32 +106,7 @@ Vue.component('tabs', {
     `,
     data: function () {
         return {
-            tabs: [
-            {
-                title: "TIMG 1 di prova",
-                isImage: true,
-                isHTML: false,
-                src: "./images/genomic_1.jpg"
-            },
-            {
-                title: "API Call result di prova",
-                isImage: false,
-                isHTML: true,
-                htmlContent: "<p style='color: brown;'>Paragrafo di prova</p>"
-            },
-            {
-                title: "IMG 2 di prova",
-                isImage: true,
-                isHTML: false,
-                src: "./images/genomic_2.png"
-            },
-            {
-                title: "IMG 3 di prova",
-                isImage: true,
-                isHTML: false,
-                src: "./images/genomic_3.png"
-            }
-            ],
+            tabs: [],
             selectedTab : 0
         }
     },

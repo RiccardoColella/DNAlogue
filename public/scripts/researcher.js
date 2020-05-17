@@ -325,12 +325,12 @@ Vue.component('tabs', {
     methods: {
         closeTab: function (index) {    
 
-            var closeObject = {
-                tab: this.tabs[index].title,
-                index: index
-            }
+            // var closeObject = {
+            //     tab: this.tabs[index].title,
+            //     index: index
+            // }
 
-            socket.emit("tabClose", closeObject);
+            // socket.emit("tabClose", closeObject);
 
             this.tabs.splice(index, 1);
 
@@ -348,15 +348,11 @@ Vue.component('tabs', {
         });
 
         eventBus.$on('tabClose', function (tab) {
-            // self.tabs.push(tab);
-            // self.selectedTab = self.tabs.length - 1;
-            // console.log(tab + " received from wizard");
+            self.closeTab(tab.index);
         });
 
         eventBus.$on('tabSwitch', function (tab) {
-            // self.tabs.push(tab);
-            // self.selectedTab = self.tabs.length - 1;
-            // console.log(tab + " received from wizard");
+            self.selectedTab = tab.index;
         });
     }
         

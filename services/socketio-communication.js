@@ -74,6 +74,7 @@ function onChatConnection(socket){
     });
 
     socket.on(events.GMQLreq, (options) => {
+        ls.infoSync("GMQL request incoming", options);
         result = {};
         try {
             result.title = options.description;
@@ -81,16 +82,15 @@ function onChatConnection(socket){
             delete options.description;
             delete options.script;
         } catch (e) {
-            ls.errorSync("Riceived options in API request event not compliant to the specifications", options)
+            ls.errorSync("Received options in API request event not compliant to the specifications", options)
         }
         result.isImage = false;
         result.isHTML = true;
 
-        ls.infoSync("GMQL request incoming", options);
         httpAPI.httpRequest('http://geco.deib.polimi.it', options).then(response => {
-            result.htmlContent = response;
+            result.htmlContent = response.body;
             sendToChatParticipants(events.HTTPres, result);
-        });
+        }).catch(error => ls.errorSync("ERROR UNKNOWN", error));
     })
 
     socket.on(events.tabClose, (details) => {

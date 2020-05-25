@@ -70,7 +70,7 @@ Vue.component('tasks', {
                 <li v-for="(task, index) in tasks"
                     :key="index"
                     :class="{ selected: selectedTask == index }"
-                    @click = "selectedTask = index">
+                    @click = "switchTask(task, index)">
                     {{ tasks[index].Title }}
                 </li>
             </ul>
@@ -133,6 +133,10 @@ Vue.component('tasks', {
         }
     },
     methods: {
+        switchTask: function (task, index) {
+            this.selectedTask = index
+            socket.emit('Switch Task', task.Title);
+        },
         sendImageToUser: function (image) {
             var tempImg = {
 

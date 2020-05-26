@@ -118,7 +118,8 @@ async function updateDB(db) {
             } else {
                 db.taskDict.clear();
                 // Building taskDict structure
-                files.forEach((file) => {
+                files.filter(el => /\.json$/i.test(el))
+                    .forEach((file) => {
                     let taskPath = tasksFolder + file;
                     try {
                         let taskInfo = getTaskTitleAndNumber(taskPath);
@@ -139,7 +140,7 @@ async function updateDB(db) {
     })).then( function () {
         return ls.log('info', "DB updated");
     }).catch( reason => {
-        errorManagement("Error while updating the DB.", reason);
+        errorManagement("Error while updating the DB.", reason.message);
     });
 }
 

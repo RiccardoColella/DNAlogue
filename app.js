@@ -3,16 +3,17 @@ const app = express();
 const http = require('http').Server(app);
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const configClass = require('./config.js');
+const config = new configClass().getInstance();
 const loggerService = require('./services/logger.js');
-const tasksController = require('./model/tasks-controller.js');
-const socketIO = require('./services/socketio-communication.js');
-const httpAPI = require('./services/httpAPI.js');
+const tasksController = require('./model/tasks-controller');
+const socketIO = require('./services/socketio-communication');
+const httpAPI = require('./services/httpAPI');
 
-const port = 4500;
+const port = config.getPort();
 
 app.use(bodyParser.json());
-app.use(express.static('\public'));
-app.use(express.static('\wizard'));
+app.use(express.static('public'));
 
 let ls = new loggerService('app');
 
@@ -33,15 +34,14 @@ let uploading = multer({
 });
 
 app.get('/', function (req, res) {
-    ls.info("Required page at '/'.").then( () => {
-        res.sendFile(__dirname + '/public/user.html');
-    });
+    ls.info("Required page at '/'.")
+        .then( () => config.increaseSessID())
+        .then( () => res.sendFile(__dirname + config.getUserPage()));
 });
 
 app.get('/wizard', function (req, res) {
-    ls.info("Required page at '/'.").then( () => {
-        res.sendFile(__dirname + '/public/researcher.html');
-    });
+    ls.info("Required page at '/wizard'.")
+        .then( () => res.sendFile(__dirname + config.getWizardPage()));
 });
 
 app.get('/tasks', tasksController.getTasks);

@@ -1,0 +1,12 @@
+{
+    "port": 4500,
+    "HTMLs": {
+        "user": "\\public\\user.html",
+        "wizard": "\\public\\researcher.html"
+    },
+    "paths": {
+        "uploadFolder": "\\public\\uploads",
+        "publicFolder": "\\public"
+    },
+    "sessID": 5
+}

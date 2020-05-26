@@ -1,5 +1,6 @@
 const httpAPI = require('./httpAPI.js');
-const loggerService = require('../services/logger.js');
+const loggerService = require('./logger.js');
+
 
 let ls = new loggerService('SocketIO');
 let io;
@@ -20,7 +21,8 @@ const events = {
     GMQLreq: 'GMQL http request',
     HTTPres: 'Send API results',
     tabClose: "tabClose",
-    tabSwitch: "tabSwitch"
+    tabSwitch: "tabSwitch",
+    taskSwitch: "Switch Task"
 }
 
 function startIO(http) {
@@ -45,6 +47,7 @@ function onChatConnection(socket){
 
     socket.on(events.login, (info) => {
         ls.infoSync("New login received", info)
+        ls.csvLogin(info);
         sendMessageTo(toWizard, events.login, info);
     })
 
@@ -58,6 +61,7 @@ function onChatConnection(socket){
                 message : msg
             };
             ls.infoSync("Received message from wizardSocket. Forwarding it to chatParticipants", message);
+            ls.csvMessage(msg, "Wizard");
         } else {
             eventName = events.usrMsg;
             message = {
@@ -65,12 +69,14 @@ function onChatConnection(socket){
                 message : msg
             };
             ls.infoSync("Received message from a non wizardSocket. Forwarding it to chatParticipants", message);
+            ls.csvMessage(msg, "User");
         }
         sendToChatParticipants(eventName, msg);
     });
 
     socket.on(events.imgPush, (image) => {
         ls.infoSync("Received 'push img' event for image at: " + image);
+        ls.csvCreateTab(image.title);
         sendToChatParticipants(events.sendUpImg, image);
     });
 
@@ -90,18 +96,26 @@ function onChatConnection(socket){
 
         httpAPI.httpRequest('http://geco.deib.polimi.it', options).then(response => {
             result.htmlContent = response.body;
+            ls.csvCreateTab(result.title)
             sendToChatParticipants(events.HTTPres, result);
         }).catch(error => ls.errorSync("ERROR UNKNOWN", error));
     })
 
     socket.on(events.tabClose, (details) => {
         ls.infoSync("User closed tab \"" + details.tab + "\"");
+        ls.csvCloseTab(details.tab);
         sendMessageTo(toWizard, events.tabClose, details)
     })
 
     socket.on(events.tabSwitch, (details) => {
         ls.infoSync("User changed view to tab \"" + details.tab + "\"");
+        ls.csvSwitchTab(details.tab);
         sendMessageTo(toWizard, events.tabSwitch, details)
+    })
+
+    socket.on(events.taskSwitch, (details) => {
+        ls.infoSync("Wizard changed task to \"" + details + "\"");
+        ls.csvSwitchTask(details);
     })
 }
 

@@ -46,8 +46,8 @@ function onChatConnection(socket){
     ls.logSync('debug', "Joining " + socket + " at chatParticipants room")
 
     socket.on(events.login, (info) => {
-        ls.infoSync("New login received", info)
-        ls.csvLogin(info);
+        ls.infoSync("New login received", info);
+        ls.csvLogin(`${info.firstName};${info.lastName};${info.company};${info.role}`);
         sendMessageTo(toWizard, events.login, info);
     })
 

@@ -8,7 +8,6 @@ dateFormat = () => {
     return new Date(Date.now()).toUTCString()
 }
 
-
 class LoggerService {
     constructor(route) {
         this.sessID = config.getSessID();
@@ -36,7 +35,7 @@ class LoggerService {
 
         this.csvWriter = createCsvWriter({
             path: './logs/logfile' + Date.now() + '.csv',
-            /*
+
             header: [
                 {id: 'datetime', title: 'DATE & TIME'},
                 {id: 'sess', title: 'SESSION ID'},
@@ -45,7 +44,6 @@ class LoggerService {
                 {id: 'msg', title: 'MSG'},
                 {id: 'content', title: 'CONTENT'}
             ]
-            */
         });
 
         config.emitter.on("Update SessID", () => {
@@ -140,6 +138,7 @@ class LoggerService {
         ]
         this.csvWriter.writeRecords(record)
             .then(() => this.info(type + " logged", content))
+            .catch(error => this.errorSync(error.stack))
     };
 
     csvLogin(loginInfo) {

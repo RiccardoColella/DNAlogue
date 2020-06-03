@@ -1,6 +1,6 @@
 const winston = require('winston');
-const datetime = require('datetime');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const fs = require('fs');
 const configClass = require('../config');
 const config = new configClass().getInstance();
 
@@ -12,6 +12,7 @@ class LoggerService {
     constructor(route) {
         this.sessID = config.getSessID();
         this.route = route;
+        this.csvpath = './logs/' + config.getCSVlogName() + '.csv';
         this.logger = winston.createLogger({
             transports: [
                 new winston.transports.Console({
@@ -33,8 +34,17 @@ class LoggerService {
             })
         });
 
+        try {
+            if (!fs.existsSync(this.csvpath)) {
+                // csv log doesn't exist. We will create it with the headings
+                fs.writeFileSync(this.csvpath, "DATE & TIME,SESSION ID,TYPE,AGENT,MSG,CONTENT\n");
+            }
+        } catch(err) {
+            this.errorSync("Error looking for csv lof file.", err)
+        }
+
         this.csvWriter = createCsvWriter({
-            path: './logs/logfile.csv',
+            path: this.csvpath,
             append: true,
 
             header: [

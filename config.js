@@ -38,6 +38,10 @@ class Options {
     getPublicFolderPath() {
         return this.options.paths.publicFolder;
     }
+
+    getCSVlogName() {
+        return this.options.csvLogName;
+    }
     
     getSessID() {
         return this.options.sessID;

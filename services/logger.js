@@ -34,7 +34,8 @@ class LoggerService {
         });
 
         this.csvWriter = createCsvWriter({
-            path: './logs/logfile' + Date.now() + '.csv',
+            path: './logs/logfile.csv',
+            append: true,
 
             header: [
                 {id: 'datetime', title: 'DATE & TIME'},

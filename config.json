@@ -8,5 +8,6 @@
         "uploadFolder": "\\public\\uploads",
         "publicFolder": "\\public"
     },
-    "sessID": 5
+    "csvLogName": "logfile",
+    "sessID": 1
 }

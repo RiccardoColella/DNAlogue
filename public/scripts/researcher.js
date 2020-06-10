@@ -530,6 +530,6 @@ socket.on('Send API results', function (api) {
 socket.on('Login', function (login) {
     console.log("'Login' received")
 
-    var text = "Welcome " + login.firstName + "! Use this chat to interact with the GenoSurf chatbot.";
+    var text = "Welcome " + login.firstName + "! Use this chat to interact with the DNAlogue chatbot.";
     socket.emit('chat message', text);
 });
